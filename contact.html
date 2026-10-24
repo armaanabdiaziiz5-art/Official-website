@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Contact Us | Hodan Hospital Mogadishu</title>
+<meta name="description" content="Hodan Hospital, Abdikassim Road, Hodan District, Mogadishu. Phone +252 61 1678555, email info@hodanhospital.com." />
+<link rel="icon" type="image/png" href="assets/favicon.png" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="assets/css/style.css" />
+</head>
+<body data-page="contact">
+<div id="site-header"></div>
+<main>
+<section class="page-hero"><div class="container">
+  <div class="crumbs"><a href="index.html" data-i18n="home">Home</a><span class="sep">/</span><span data-i18n="pContact">Contact Us</span></div>
+  <h1 data-i18n="pContact">Contact Us</h1>
+  <p data-i18n="pContactSub">Call us, write to us or visit us.</p>
+</div></section>
+<section class="section"><div class="container">
+<div class="head-row reveal"><div>
+  <span class="eyebrow" data-i18n="contactEyebrow">Contact Us</span>
+  <h2 class="section-title" data-i18n="contactTitle">We are here to help</h2>
+  
+</div></div>
+  <div class="contact-grid"><div class="contact-cards reveal">
+  <div class="ccard"><span class="ic"><svg width="24" height="24" fill="none" stroke="#3a4349" stroke-width="2"><use href="#i-pin"/></svg></span><div><b data-i18n="address">Address</b><span>Abdikassim Road, Hodan District, Mogadishu, Somalia</span></div></div>
+  <div class="ccard"><span class="ic"><svg width="24" height="24" fill="none" stroke="#3a4349" stroke-width="2"><use href="#i-phone"/></svg></span><div><b data-i18n="phone">Phone</b><a href="tel:+252611678555">+252 61 1678555</a></div></div>
+  <div class="ccard"><span class="ic"><svg width="24" height="24" fill="none" stroke="#3a4349" stroke-width="2"><use href="#i-mail"/></svg></span><div><b data-i18n="emailUs">Email</b><a href="mailto:info@hodanhospital.com">info@hodanhospital.com</a></div></div>
+  <div class="ccard"><span class="ic"><svg width="24" height="24" fill="none" stroke="#3a4349" stroke-width="2"><use href="#i-clock"/></svg></span><div><b data-i18n="hours">Hours</b><span data-i18n="hoursVal">Open 24 hours, 7 days</span></div></div>
+</div>
+<div class="map reveal"><iframe title="Hodan Hospital location map" loading="lazy" referrerpolicy="no-referrer-when-downgrade" src="https://maps.google.com/maps?q=Hodan%20Hospital%2C%20Abdikassim%20Road%2C%20Mogadishu&t=&z=14&ie=UTF8&iwloc=&output=embed"></iframe></div></div>
+</div></section>
+<section class="section section-soft"><div class="container"><div class="appt reveal"><div class="appt-info">
+  <span class="eyebrow" data-i18n="apptEyebrow">Appointments</span>
+  <h2 data-i18n="apptTitle">Book your appointment with a specialist</h2>
+  <p data-i18n="apptText">Fill in the form and our call center will confirm your visit. For emergencies, call us directly.</p>
+  <div class="line"><span class="ic"><svg width="22" height="22" fill="none" stroke="#fff" stroke-width="2"><use href="#i-phone"/></svg></span><span><small data-i18n="callCenter">Call Center</small><b><a href="tel:+252611678555">+252 61 1678555</a></b></span></div>
+  <div class="line"><span class="ic"><svg width="22" height="22" fill="none" stroke="#fff" stroke-width="2"><use href="#i-mail"/></svg></span><span><small data-i18n="emailUs">Email</small><b><a href="mailto:info@hodanhospital.com">info@hodanhospital.com</a></b></span></div>
+  <div class="line"><span class="ic"><svg width="22" height="22" fill="none" stroke="#fff" stroke-width="2"><use href="#i-clock"/></svg></span><span><small data-i18n="hours">Hours</small><b data-i18n="hoursVal">Open 24 hours, 7 days</b></span></div>
+</div><form class="appt-form" id="apptForm" novalidate>
+  <h3 data-i18n="formTitle">Request an Appointment</h3>
+  <div class="field"><label for="fName" data-i18n="fName">Full name *</label><input id="fName" name="name" required autocomplete="name" /></div>
+  <div class="field"><label for="fPhone" data-i18n="fPhone">Phone number *</label><input id="fPhone" name="phone" type="tel" required autocomplete="tel" placeholder="+252 …" /></div>
+  <div class="field"><label for="fDept" data-i18n="fDept">Department</label><select id="fDept" name="dept"></select></div>
+  <div class="field"><label for="fDoc" data-i18n="fDoc">Doctor</label><select id="fDoc" name="doctor"></select></div>
+  <div class="field"><label for="fDate" data-i18n="fDate">Preferred date</label><input id="fDate" name="date" type="date" /></div>
+  <div class="field"><label for="fGender" data-i18n="fGender">Gender</label>
+    <select id="fGender" name="gender"><option value="" data-i18n="optSelect">Select</option><option value="Male" data-i18n="optMale">Male</option><option value="Female" data-i18n="optFemale">Female</option></select></div>
+  <div class="field full"><label for="fPkg" data-i18n="navChecks">Health Checkups</label><select id="fPkg" name="pkg"></select></div>
+  <div class="field full"><label for="fMsg" data-i18n="fMsg">Reason for visit</label><textarea id="fMsg" name="message"></textarea></div>
+  <div class="form-msg" id="formMsg" role="status"></div>
+  <div class="form-actions">
+    <button type="submit" class="btn btn-red" data-i18n="sendEmail">Send Request</button>
+    <button type="button" class="btn btn-ghost" id="sendWa" data-i18n="sendWa">Send via WhatsApp</button>
+  </div>
+  <p class="form-note" data-i18n="formNote">Your request opens in your email or WhatsApp app so you can send it straight to the hospital.</p>
+</form></div></div></section>
+</main>
+<div id="site-footer"></div>
+<script src="assets/js/icons.js"></script>
+<script src="assets/js/data.js"></script>
+<script src="assets/js/main.js"></script>
+</body>
+</html>

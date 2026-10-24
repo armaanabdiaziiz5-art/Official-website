@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Find a Doctor | Hodan Hospital Mogadishu</title>
+<meta name="description" content="Find a specialist doctor at Hodan Hospital and book an appointment." />
+<link rel="icon" type="image/png" href="assets/favicon.png" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="assets/css/style.css" />
+</head>
+<body data-page="doctors">
+<div id="site-header"></div>
+<main>
+<section class="page-hero"><div class="container">
+  <div class="crumbs"><a href="index.html" data-i18n="home">Home</a><span class="sep">/</span><span data-i18n="pDocs">Find a Doctor</span></div>
+  <h1 data-i18n="pDocs">Find a Doctor</h1>
+  <p data-i18n="pDocsSub">Search our doctors by name or speciality.</p>
+</div></section>
+<section class="section"><div class="container">
+  <div class="doc-tools">
+    <input type="search" id="docSearch" placeholder="Search doctor by name…" data-i18n-ph="fDocName" aria-label="Search doctor" />
+    <select id="docFilter" aria-label="Filter by speciality"></select>
+  </div>
+  <p class="count-line" id="docCount"></p>
+  <div class="doc-grid" id="docGrid"></div>
+</div></section>
+<section class="section" style="padding-top:0"><div class="container">
+  <div class="fac-wrap reveal" style="display:flex;justify-content:space-between;align-items:center;gap:24px;flex-wrap:wrap;padding:40px 44px">
+    <div style="position:relative"><h2 class="section-title" style="margin:0" data-i18n="ctaTitle">Need medical help?</h2><p class="section-sub" data-i18n="ctaText">Our call center team is available 24 hours a day.</p></div>
+    <div style="display:flex;gap:12px;flex-wrap:wrap;position:relative"><a href="tel:+252611678555" class="btn btn-red">+252 61 1678555</a><a href="book-appointment.html" class="btn btn-outline" data-i18n="bookAppt">Book Appointment</a></div>
+  </div>
+</div></section>
+</main>
+<div id="site-footer"></div>
+<script src="assets/js/icons.js"></script>
+<script src="assets/js/data.js"></script>
+<script src="assets/js/main.js"></script>
+</body>
+</html>
