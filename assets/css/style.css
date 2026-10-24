@@ -434,3 +434,4 @@
     .finder-tabs { flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; }
     .finder-tabs button { flex-shrink: 0; padding: 8px 14px; font-size: 13px; }
   }
+  .drawer .panel a.btn { display: flex; text-align: center; }
