@@ -14,10 +14,17 @@
   function slug(s) { return s.toLowerCase().replace(/^(prof|dr)\.\s*/, '').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, ''); }
   function icon(id, color, size) { size = size || 26; return '<svg width="' + size + '" height="' + size + '" fill="none" stroke="' + (color || 'currentColor') + '" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><use href="#' + id + '"/></svg>'; }
   function specById(id) { for (var i = 0; i < SPECS.length; i++) if (SPECS[i].id === id) return SPECS[i]; return null; }
-  function docById(id) { for (var i = 0; i < DOCTORS.length; i++) if (slug(DOCTORS[i].name) === id) return DOCTORS[i]; return null; }
-  function specName(s) { return lang === 'so' ? s.so : s.en; }
-  function specDesc(s) { return lang === 'so' ? s.dso : s.den; }
-  function initials(name) { var p = name.replace(/^(Prof\.|Dr\.)\s*/, '').split(' '); return (p[0][0] + (p[1] ? p[1][0] : '')).toUpperCase(); }
+  function docById(id) { for (var i = 0; i < DOCTORS.length; i++) if (DOCTORS[i].slug === id) return DOCTORS[i]; return null; }
+  function specName(s) { return s ? (lang === 'so' ? s.so : s.en) : ''; }
+  function specDesc(s) { return s ? s.den : ''; }
+  function initials(name) { var p = name.replace(/^(Prof\.?\s*)?(Dr\.?|Mr\.?)\s*/i, '').split(' '); return (p[0][0] + (p[1] ? p[1][0] : '')).toUpperCase(); }
+  // A portrait is shown only when the data has a photo (Public + Cleared in the CMS); otherwise initials.
+  function portrait(person, color, cls) {
+    return person.photo
+      ? '<img src="' + esc(person.photo) + '" alt="' + esc('Portrait of ' + person.name) + '" loading="lazy" decoding="async" class="' + (cls || '') + '" />'
+      : '<div class="avatar" style="color:' + color + '" role="img" aria-label="' + esc('Photo of ' + person.name + ' coming soon') + '">' + initials(person.name) + '</div>';
+  }
+  var OTHER = '_other'; // doctors without a department page
   function $(id) { return document.getElementById(id); }
   var TINT = ['#eef0f2', '#fdf1dc', '#fde8e9', '#e7f7ee', '#eee8fb', '#e6f2fb'];
   var INK = ['#3a4349', '#c47a08', '#e8262d', '#1f8a4c', '#6b46c1', '#1d6fb0'];
@@ -33,7 +40,7 @@
     var act = function (p) { return PAGE === p ? ' active' : ''; };
     return '' +
       '<div class="topbar"><div class="container"><div class="topbar-left">' +
-        '<a href="tel:' + HH.tel + '" class="emer"><span data-i18n="emergency24">24/7 Emergency</span>: ' + HH.phone + '</a>' +
+        '<a href="tel:' + HH.tel + '" class="emer"><span data-i18n="callUs">Call Us</span>: ' + HH.phone + '</a>' +
         '<a href="mailto:' + HH.email + '" class="hide-sm">' + HH.email + '</a>' +
         '<span class="hide-sm">' + esc(L(HH.address)) + '</span>' +
       '</div><div class="topbar-right"><div class="lang-switch" role="group" aria-label="Language">' +
@@ -44,7 +51,7 @@
           '<a href="index.html" class="' + act('home') + '" data-i18n="navHome">Home</a>' +
           '<div class="dropdown' + act('about') + '"><button type="button"><span data-i18n="navAbout">About Us</span>' + icon('i-chev', null, 16) + '</button>' +
             '<div class="dropdown-panel small"><a href="about.html"><span class="dot"></span><span data-i18n="navWho">Who We Are</span></a>' +
-            '<a href="about.html#management"><span class="dot"></span><span data-i18n="navMgmt">Management</span></a>' +
+            '<a href="about.html#management"><span class="dot"></span><span data-i18n="navMgmt">Leadership</span></a>' +
             '<a href="about.html#news"><span class="dot"></span><span data-i18n="navNews">News</span></a></div></div>' +
           '<div class="dropdown' + act('specialities') + act('speciality') + '"><button type="button"><span data-i18n="navSpec">Specialities</span>' + icon('i-chev', null, 16) + '</button>' +
             '<div class="dropdown-panel mega">' + groups + '<a class="all" href="specialities.html" data-i18n="navAllSpecs">All specialities →</a></div></div>' +
@@ -54,7 +61,7 @@
             '<div class="dropdown-panel small"><a href="services.html"><span class="dot"></span><span data-i18n="navServices">Medical Services</span></a>' +
             '<a href="international-patients.html"><span class="dot"></span><span data-i18n="navIntl">Diaspora Patients</span></a>' +
             '<a href="book-appointment.html"><span class="dot"></span><span data-i18n="bookAppt">Book Appointment</span></a>' +
-            '<a href="tel:' + HH.tel + '"><span class="dot" style="background:var(--danger)"></span><span data-i18n="emergency24">24/7 Emergency</span></a></div></div>' +
+            '<a href="contact.html#call-center"><span class="dot"></span><span data-i18n="callCenter">Call Center</span></a></div></div>' +
           '<a href="contact.html" class="' + act('contact') + '" data-i18n="navContact">Contact</a>' +
         '</nav>' +
         '<div class="header-cta"><a href="tel:' + HH.tel + '" class="btn btn-ghost">' + icon('i-phone', null, 18) + ' <span data-i18n="callUs">Call Us</span></a>' +
@@ -76,7 +83,7 @@
     var so = HH.social;
     return '<footer><div class="container"><div class="foot-grid"><div>' +
       '<a href="index.html" class="logo"><img src="assets/logo-white.png" alt="Hodan Hospital" width="551" height="181" /></a>' +
-      '<p class="about-txt" data-i18n="footAbout">A premier private healthcare institution in Mogadishu, dedicated to excellence in medical care and innovation.</p>' +
+      '<p class="about-txt">' + esc(HH.footerText) + '</p>' +
       '<div class="socials">' +
         '<a href="' + so.facebook + '" target="_blank" rel="noopener" aria-label="Facebook"><svg width="18" height="18" viewBox="0 0 24 24" fill="#fff"><path d="M14 8h3V4h-3a4 4 0 0 0-4 4v2H7v4h3v8h4v-8h3l1-4h-4V8z"/></svg></a>' +
         '<a href="' + so.x + '" target="_blank" rel="noopener" aria-label="X"><svg width="16" height="16" viewBox="0 0 24 24" fill="#fff"><path d="M18.2 2H21l-6.5 7.4L22 22h-6l-4.7-6.1L5.9 22H3l7-8L2.5 2h6.1l4.2 5.6zm-1 18h1.6L7 3.9H5.3z"/></svg></a>' +
@@ -92,37 +99,45 @@
         return '<li><a href="speciality.html?id=' + s.id + '">' + esc(specName(s)) + '</a></li>';
       }).join('') + '</ul></div>' +
       '<div><h4 data-i18n="contactEyebrow">Contact Us</h4><ul><li>' + esc(L(HH.address)) + '</li>' +
-        '<li><a href="tel:' + HH.tel + '">' + HH.phone + '</a></li><li><a href="mailto:' + HH.email + '">' + HH.email + '</a></li>' +
-        '<li data-i18n="hoursVal">Open 24 hours, 7 days</li></ul></div>' +
+        '<li><a href="tel:' + HH.tel + '">' + HH.phone + '</a></li><li><span data-i18n="helpline">Call center helpline</span>: <a href="tel:' + HH.helpline + '">' + HH.helpline + '</a></li>' +
+        '<li><a href="mailto:' + HH.email + '">' + HH.email + '</a></li></ul></div>' +
       '</div><div class="foot-bottom"><span>© ' + new Date().getFullYear() + ' Hodan Hospital. <span data-i18n="rights">All rights reserved.</span></span>' +
       '<span data-i18n="disclaimer">Doctor schedules may change. Please call to confirm availability.</span></div></div></footer>' +
       '<div class="float-call"><a class="wa" href="https://wa.me/' + HH.wa + '" target="_blank" rel="noopener" aria-label="WhatsApp"><svg width="28" height="28" viewBox="0 0 24 24" fill="#fff"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm5.3 14.2c-.2.6-1.3 1.2-1.8 1.3-.5 0-1 .2-3.3-.7a11.6 11.6 0 0 1-4.6-4c-.4-.5-1-1.8-1-3.3s.8-2.3 1.1-2.6c.3-.3.6-.4.8-.4h.6c.2 0 .4 0 .7.5l.9 2.2c.1.2.1.4 0 .6l-.4.6-.5.5c-.2.2-.3.4-.1.7.2.4.9 1.5 2 2.4 1.3 1.2 2.4 1.5 2.8 1.7.3.1.5.1.7-.1l.9-1.1c.2-.3.5-.3.8-.2l2 1c.3.1.5.2.6.3.1.2.1.7-.1 1.3z"/></svg></a>' +
-      '<a class="ph" href="tel:' + HH.tel + '" aria-label="Call emergency">' + icon('i-phone', '#fff', 26) + '</a></div>';
+      '<a class="ph" href="tel:' + HH.tel + '" aria-label="Call Hodan Hospital">' + icon('i-phone', '#fff', 26) + '</a></div>';
   }
 
   /* ---------- cards ---------- */
+  function tintIdx(s) { return s ? SPECS.indexOf(s) % TINT.length : 0; }
+  function bookUrl(d) { return 'book-appointment.html?' + (d.spec ? 'spec=' + d.spec + '&' : '') + 'doc=' + encodeURIComponent(d.name); }
   function docCard(d) {
-    var s = specById(d.spec), i = SPECS.indexOf(s) % TINT.length, url = 'doctor.html?id=' + slug(d.name);
-    var photo = d.photo ? '<img src="' + esc(d.photo) + '" alt="' + esc(d.name) + '" loading="lazy" />' : '<div class="avatar" style="color:' + INK[i] + '">' + initials(d.name) + '</div>';
-    return '<article class="doc"><a href="' + url + '" class="doc-photo" style="background:linear-gradient(150deg,' + TINT[i] + ',#fff)"><span class="badge">' + esc(specName(s)) + '</span>' + photo + '</a>' +
-      '<div class="doc-body"><h3><a href="' + url + '">' + esc(d.name) + '</a></h3><span class="sp">' + esc(d.role || specName(s)) + '</span>' +
-      '<p>' + esc(d.exp ? d.exp + ' experience' : 'Hodan Hospital, Mogadishu') + '</p>' +
-      '<a href="book-appointment.html?spec=' + d.spec + '&doc=' + encodeURIComponent(d.name) + '" class="btn btn-blue">' + t('bookAppt', 'Book Appointment') + '</a></div></article>';
+    var s = specById(d.spec), i = tintIdx(s), url = 'doctor.html?id=' + d.slug;
+    var meta = [d.qual, d.exp ? d.exp + ' ' + t('expWord', 'experience') : ''].filter(Boolean).join(' · ');
+    return '<article class="doc"><a href="' + url + '" class="doc-photo" style="background:linear-gradient(150deg,' + TINT[i] + ',#fff)">' +
+      (s ? '<span class="badge">' + esc(specName(s)) + '</span>' : '') + portrait(d, INK[i]) + '</a>' +
+      '<div class="doc-body"><h3><a href="' + url + '">' + esc(d.name) + '</a></h3><span class="sp">' + esc(d.role) + '</span>' +
+      '<p>' + esc(meta || 'Hodan Hospital, Mogadishu') + '</p>' +
+      '<a href="' + bookUrl(d) + '" class="btn btn-blue">' + t('bookAppt', 'Book Appointment') + '</a></div></article>';
   }
   function specCard(s) {
     return '<a href="speciality.html?id=' + s.id + '" class="spec"><div class="ic">' + icon(s.icon, '#3a4349', 28) + '</div><h3>' + esc(specName(s)) +
       '</h3><p>' + esc(specDesc(s)) + '</p><span class="more">' + t('learnMore', 'Learn more') + ' →</span></a>';
   }
   function pkgCard(p) {
-    return '<div class="pkg"><div class="top"><span class="ic">' + icon(p.icon, '#c47a08', 26) + '</span><div><h3>' + esc(L(p)) + '</h3><span class="count">' + p.tests.length + ' ' + t('testsIncl', 'tests included') + '</span></div></div>' +
+    var aud = p.aud === 'women' ? t('forWomen', 'For women') : p.aud === 'men' ? t('forMen', 'For men') : '';
+    return '<div class="pkg"><div class="top"><span class="ic">' + icon(p.icon, '#c47a08', 26) + '</span><div><h3>' + esc(L(p)) + '</h3><span class="count">' + esc(aud) + '</span></div></div>' +
       '<ul>' + p.tests.map(function (x) { return '<li>' + icon('i-check', '#1f8a4c', 15) + esc(x) + '</li>'; }).join('') + '</ul>' +
-      '<div class="price">' + t('priceCall', 'Price: call for details') + '</div>' +
+      '<div class="price">' + t('priceCall', 'Price and availability: please call') + '</div>' +
       '<a href="book-appointment.html?pkg=' + p.id + '" class="btn btn-red">' + t('bookCheck', 'Book this Check-up') + '</a></div>';
   }
-  function facCard(f) { var x = f[lang] || f.en; return '<div class="fac"><div class="ic">' + icon(f.icon, '#fff', 24) + '</div><h3>' + esc(x[0]) + '</h3><p>' + esc(x[1]) + '</p></div>'; }
+  var SVC_ICON = { centers: 'i-heart', outpatient: 'i-stetho', inpatient: 'i-bed', other: 'i-plus', diagnostics: 'i-scan' };
+  function svcGroup(g) {
+    return '<div class="fac"><div class="ic">' + icon(SVC_ICON[g.id] || 'i-plus', '#fff', 24) + '</div><h3>' + esc(L(g)) + '</h3><ul class="svc-list">' +
+      g.items.map(function (x) { return '<li>' + esc(x) + '</li>'; }).join('') + '</ul></div>';
+  }
   function newsCard(n) {
-    return '<article class="news"><div class="thumb">' + icon('i-news', '#fff', 46) + '</div><div class="body"><small>' + esc(n.date) + '</small><h3>' + esc(L(n)) + '</h3><p>' + esc(n.pen) +
-      '</p><a class="more" href="' + n.url + '" target="_blank" rel="noopener">' + t('readMore', 'Read the story →') + '</a></div></article>';
+    return '<article class="news"><div class="thumb">' + icon('i-news', '#fff', 46) + '</div><div class="body">' + (n.date ? '<small>' + esc(n.date) + '</small>' : '') + '<h3>' + esc(L(n)) + '</h3><p></p>' +
+      (n.url ? '<a class="more" href="' + n.url + '" target="_blank" rel="noopener">' + t('readMore', 'Read the story →') + '</a>' : '') + '</div></article>';
   }
 
   /* ---------- section renderers (run when their container exists) ---------- */
@@ -143,26 +158,50 @@
     var n = +el.getAttribute('data-limit') || PACKAGES.length;
     el.innerHTML = PACKAGES.slice(0, n).map(pkgCard).join('');
   }
-  function renderFac() { var el = $('facGrid'); if (el) el.innerHTML = FACILITIES.map(facCard).join(''); }
+  function renderFac() { var el = $('facGrid'); if (el) el.innerHTML = SERVICES.map(svcGroup).join(''); }
   function renderNews() { var el = $('newsGrid'); if (el) el.innerHTML = NEWS.map(newsCard).join(''); }
   function renderMgmt() {
     var el = $('mgmtGrid'); if (!el) return;
-    el.innerHTML = MANAGEMENT.map(function (m) {
-      return '<div class="card"><div class="avatar">' + initials(m.name) + '</div><div><b>' + esc(m.name) + '</b><span>' + esc(L(m)) + '</span></div></div>';
+    el.innerHTML = LEADERS.map(function (m) {
+      return '<div class="card"><div class="lead-photo">' + portrait(m, '#c47a08') + '</div><div><b>' + esc(m.name) + '</b><span class="role">' + esc(m.role) + '</span>' +
+        (m.bio ? '<p>' + esc(m.bio) + '</p>' : '') + '</div></div>';
     }).join('');
+    var msg = $('chairMsg'), ch = LEADERS.filter(function (m) { return m.message && m.message.length; })[0];
+    if (msg && ch) msg.innerHTML = '<blockquote>' + ch.message.map(function (p) { return '<p>' + esc(p) + '</p>'; }).join('') + '</blockquote><cite>' + esc(ch.name) + ', ' + esc(ch.role) + '</cite>';
+  }
+  function renderAboutText() {
+    var el = $('aboutText'); if (!el) return;
+    var heads = ['Hospital Overview', 'Quality Management', 'Hospitality', 'Healthcare Team'];
+    el.innerHTML = ABOUT_TEXT.map(function (p) { return heads.indexOf(p) > -1 ? '<h3>' + esc(p) + '</h3>' : '<p>' + esc(p) + '</p>'; }).join('');
+  }
+  function renderCallCenter() {
+    var el = $('callCenterText'); if (!el) return;
+    var items = CALL_CENTER.filter(function (p) { return /\.$/.test(p) && p.length < 90 && !/^Helpline/.test(p) && !/^Hodan|^The call/.test(p); });
+    el.innerHTML = '<p>' + esc(CALL_CENTER[0]) + '</p><ul class="ticks" style="grid-template-columns:1fr">' + items.map(function (x) { return '<li>' + esc(x) + '</li>'; }).join('') + '</ul>';
+  }
+  function renderStats() {
+    document.querySelectorAll('[data-stat]').forEach(function (el) {
+      var k = el.getAttribute('data-stat');
+      var n = k === 'doctors' ? DOCTORS.length : k === 'specs' ? SPECS.length : k === 'services' ? SERVICES.reduce(function (a, g) { return a + g.items.length; }, 0) : 0;
+      el.setAttribute('data-count', n);
+      if (!el.textContent || el.textContent === '0') el.textContent = n;
+    });
   }
   function specOptions(sel, firstLabel, onlyWithDocs) {
     if (!sel) return;
     var cur = sel.value;
+    var hasOther = DOCTORS.some(function (d) { return !d.spec; });
     sel.innerHTML = '<option value="">' + firstLabel + '</option>' + SPECS.filter(function (s) {
       return !onlyWithDocs || DOCTORS.some(function (d) { return d.spec === s.id; });
-    }).map(function (s) { return '<option value="' + s.id + '">' + esc(specName(s)) + '</option>'; }).join('');
+    }).map(function (s) { return '<option value="' + s.id + '">' + esc(specName(s)) + '</option>'; }).join('') +
+      (onlyWithDocs && hasOther ? '<option value="' + OTHER + '">' + t('otherSpecialists', 'Other specialists (Emergency, ICU, Urology)') + '</option>' : '');
     sel.value = cur;
   }
+  function matchSpec(d, spec) { return !spec || (spec === OTHER ? !d.spec : d.spec === spec); }
   function docOptions(sel, spec) {
     if (!sel) return;
     var cur = sel.value;
-    sel.innerHTML = '<option value="">' + t('anyDoctor', 'Any doctor') + '</option>' + DOCTORS.filter(function (d) { return !spec || d.spec === spec; })
+    sel.innerHTML = '<option value="">' + t('anyDoctor', 'Any doctor') + '</option>' + DOCTORS.filter(function (d) { return matchSpec(d, spec); })
       .map(function (d) { return '<option>' + esc(d.name) + '</option>'; }).join('');
     sel.value = cur;
   }
@@ -180,8 +219,8 @@
     specOptions($('docFilter'), t('allSpecs', 'All specialities'), true);
     var q = $('docSearch').value.trim().toLowerCase(), f = $('docFilter').value;
     var list = DOCTORS.filter(function (d) {
-      var s = specById(d.spec), hay = (d.name + ' ' + s.en + ' ' + s.so + ' ' + (d.role || '')).toLowerCase();
-      return (!f || d.spec === f) && (!q || hay.indexOf(q) > -1);
+      var s = specById(d.spec), hay = (d.name + ' ' + (s ? s.en + ' ' + s.so : '') + ' ' + (d.role || '')).toLowerCase();
+      return matchSpec(d, f) && (!q || hay.indexOf(q) > -1);
     });
     $('docCount').textContent = list.length + ' ' + t('docsFound', 'doctors found');
     grid.innerHTML = list.length ? list.map(docCard).join('') : '<div class="empty">' + t('noDocs', 'No doctor found. Please try another search.') + '</div>';
@@ -197,17 +236,15 @@
     $('crumbName').textContent = specName(s);
     var docs = DOCTORS.filter(function (d) { return d.spec === s.id; });
     root.innerHTML =
-      '<h2>' + t('overview', 'Overview') + '</h2><p>' + esc(lang === 'so' ? s.dso : s.oen) + '</p>' +
-      '<h2>' + t('treatments', 'Treatments & Services') + '</h2><div class="treat">' + s.items.map(function (x) {
-        return '<div>' + icon('i-check', '#c47a08', 18) + esc(x) + '</div>';
-      }).join('') + '</div>' +
+      '<h2>' + t('overview', 'Overview') + '</h2><p>' + esc(s.oen || s.den) + '</p>' +
+      s.sections.filter(function (sec) { return sec.items.length; }).map(function (sec) {
+        return '<h2>' + esc(sec.h) + '</h2>' + (sec.items.length === 1 && sec.items[0].length > 90
+          ? '<p>' + esc(sec.items[0]) + '</p>'
+          : '<div class="treat">' + sec.items.map(function (x) { return '<div>' + icon('i-check', '#c47a08', 18) + esc(x) + '</div>'; }).join('') + '</div>');
+      }).join('') +
       '<h2>' + t('ourSpecialists', 'Our Specialists') + '</h2>' + (docs.length ? '<div class="doc-grid" style="grid-template-columns:repeat(auto-fill,minmax(220px,1fr))">' + docs.map(docCard).join('') + '</div>'
         : '<p>' + t('noDocsDept', 'Please call our call center to find out which doctors are available in this department.') + '</p>') +
-      '<h2>' + t('faq', 'Frequently Asked Questions') + '</h2><div class="faq">' +
-        '<details><summary>How do I book an appointment in ' + esc(s.en) + '?</summary><p>Call ' + HH.phone + ', send us a WhatsApp message, or use the online appointment form. Our call center will confirm the date and doctor.</p></details>' +
-        '<details><summary>What should I bring to my first visit?</summary><p>Bring an ID, any previous medical reports, test results or scans, and a list of the medicines you take.</p></details>' +
-        '<details><summary>What if it is an emergency?</summary><p>Our emergency room is open 24 hours a day. Call ' + HH.phone + ' or come straight to the hospital on Abdikassim Road.</p></details>' +
-      '</div>';
+      '<p class="note">' + t('confirmNote', 'Services and doctor availability can change. Please call the hospital to confirm before your visit.') + '</p>';
     $('otherSpecs').innerHTML = SPECS.map(function (x) {
       return '<li><a href="speciality.html?id=' + x.id + '" class="' + (x.id === s.id ? 'on' : '') + '">' + esc(specName(x)) + '</a></li>';
     }).join('');
@@ -217,27 +254,24 @@
   /* doctor profile */
   function renderDoctor() {
     var root = $('docProfile'); if (!root) return;
-    var d = docById(params.get('id')) || DOCTORS[0], s = specById(d.spec), i = SPECS.indexOf(s) % TINT.length;
-    document.title = d.name + ' | ' + s.en + ' | Hodan Hospital';
+    var d = docById(params.get('id')) || DOCTORS[0], s = specById(d.spec), i = tintIdx(s);
+    document.title = d.name + ' | ' + d.role + ' | Hodan Hospital';
     $('pageTitle').textContent = d.name;
-    $('pageSub').textContent = (d.role || s.en) + ', Hodan Hospital Mogadishu';
+    $('pageSub').textContent = d.role + ', Hodan Hospital Mogadishu';
     $('crumbName').textContent = d.name;
-    var photo = d.photo ? '<img src="' + esc(d.photo) + '" alt="' + esc(d.name) + '" />' : '<div class="avatar" style="color:' + INK[i] + '">' + initials(d.name) + '</div>';
-    var book = 'book-appointment.html?spec=' + d.spec + '&doc=' + encodeURIComponent(d.name);
     root.innerHTML =
-      '<div class="profile-card"><div class="doc-photo" style="background:linear-gradient(150deg,' + TINT[i] + ',#fff)">' + photo + '</div>' +
-        '<div class="in"><a class="btn btn-red" href="' + book + '">' + t('bookAppt', 'Book Appointment') + '</a>' +
+      '<div class="profile-card"><div class="doc-photo" style="background:linear-gradient(150deg,' + TINT[i] + ',#fff)">' + portrait(d, INK[i]) + '</div>' +
+        '<div class="in"><a class="btn btn-red" href="' + bookUrl(d) + '">' + t('bookAppt', 'Book Appointment') + '</a>' +
         '<a class="btn btn-ghost" href="tel:' + HH.tel + '">' + icon('i-phone', null, 18) + ' ' + HH.phone + '</a></div></div>' +
-      '<div><h2 style="font-size:26px;color:var(--primary-dark)">' + esc(d.name) + '</h2><p style="color:var(--accent);font-weight:600">' + esc(d.role || specName(s)) + '</p>' +
-        '<dl class="kv"><dt>' + t('speciality', 'Speciality') + '</dt><dd><a href="speciality.html?id=' + s.id + '">' + esc(specName(s)) + '</a></dd>' +
+      '<div><h2 style="font-size:26px;color:var(--primary-dark)">' + esc(d.name) + '</h2><p style="color:var(--accent);font-weight:600">' + esc(d.role) + '</p>' +
+        '<dl class="kv">' +
+        (s ? '<dt>' + t('department', 'Department') + '</dt><dd><a href="speciality.html?id=' + s.id + '">' + esc(specName(s)) + '</a></dd>' : '') +
+        (d.qual ? '<dt>' + t('qualifications', 'Qualifications') + '</dt><dd>' + esc(d.qual) + '</dd>' : '') +
         (d.exp ? '<dt>' + t('experience', 'Experience') + '</dt><dd>' + esc(d.exp) + '</dd>' : '') +
         '<dt>' + t('hospital', 'Hospital') + '</dt><dd>Hodan Hospital</dd><dt>' + t('location', 'Location') + '</dt><dd>' + esc(L(HH.address)) + '</dd></dl>' +
-        '<h3 style="color:var(--primary-dark);margin-bottom:8px">' + t('aboutDoc', 'About') + '</h3><p style="color:var(--muted)">' +
-          esc(d.note || (d.name + ' is part of the ' + s.en + ' department at Hodan Hospital. ' + s.den)) + '</p>' +
-        '<h3 style="color:var(--primary-dark);margin:24px 0 10px">' + t('treatments', 'Treatments & Services') + '</h3><div class="treat">' +
-          s.items.slice(0, 6).map(function (x) { return '<div>' + icon('i-check', '#c47a08', 18) + esc(x) + '</div>'; }).join('') + '</div>' +
+        (d.bio ? '<h3 style="color:var(--primary-dark);margin-bottom:8px">' + t('aboutDoc', 'About') + '</h3><p style="color:var(--muted)">' + esc(d.bio) + '</p>' : '') +
         '<p class="note">' + t('disclaimer', 'Doctor schedules may change. Please call to confirm availability.') + '</p></div>';
-    var others = DOCTORS.filter(function (x) { return x.spec === d.spec && x !== d; });
+    var others = DOCTORS.filter(function (x) { return d.spec ? x.spec === d.spec && x !== d : false; });
     $('relatedWrap').style.display = others.length ? '' : 'none';
     $('related').innerHTML = others.map(docCard).join('');
   }
@@ -272,6 +306,7 @@
     document.querySelectorAll('.lang-switch button').forEach(function (b) { b.classList.toggle('active', b.getAttribute('data-lang') === lang); });
     $('burger').addEventListener('click', function () { toggleDrawer(true); });
     renderSpecGrid(); renderDocTrack(); renderPkgs(); renderFac(); renderNews(); renderMgmt();
+    renderAboutText(); renderCallCenter(); renderStats();
     renderFinder(); renderDoctorList(); renderSpeciality(); renderDoctor(); renderForm();
   }
 
@@ -311,7 +346,8 @@
     $('finder').addEventListener('submit', function (e) {
       e.preventDefault();
       var doc = $('finderDoc').value;
-      if (doc) { location.href = 'doctor.html?id=' + slug(doc); return; }
+      var hit = DOCTORS.filter(function (x) { return x.name === doc; })[0];
+      if (hit) { location.href = 'doctor.html?id=' + hit.slug; return; }
       location.href = 'doctors.html' + ($('finderSpec').value ? '?spec=' + $('finderSpec').value : '');
     });
   }
