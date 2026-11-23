@@ -588,11 +588,11 @@ var DOCTORS = [
     "slug": "ahmed-omar",
     "name": "Dr. Ahmed Omar",
     "spec": "internal-medicine",
-    "role": "Neuropsychiatry & Internal Medicine",
+    "role": "Neurology",
     "qual": null,
     "exp": null,
     "bio": "Over 10 years; stroke, epilepsy, Alzheimer’s, migraines, multiple sclerosis, schizophrenia, myasthenia gravis, Parkinson disease and mood disorders.",
-    "photo": null
+    "photo": "assets/img/doctors/ahmed-omar.jpg"
   },
   {
     "slug": "yasir-balla",
