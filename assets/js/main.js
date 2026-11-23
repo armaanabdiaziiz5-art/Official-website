@@ -477,21 +477,49 @@
     var root = $('docProfile'); if (!root) return;
     var d = docById(params.get('id')) || DOCTORS[0], s = specById(d.spec), i = tintIdx(s);
     document.title = d.name + ' | ' + d.role + ' | Hodan Hospital';
-    $('pageTitle').textContent = d.name;
-    $('pageSub').textContent = d.role + ', Hodan Hospital Mogadishu';
     $('crumbName').textContent = d.name;
+    var list = function (v) { return Array.isArray(v) ? v.filter(Boolean) : v ? [v] : []; };
+    // facts shown at the top only when confirmed in the data
+    var facts = [
+      [t('qualifications', 'Qualifications'), d.qual],
+      [t('experience', 'Experience'), d.exp ? d.exp + ' ' + t('expWord', 'experience') : ''],
+      [t('department', 'Department'), s ? '<a href="speciality.html?id=' + s.id + '">' + esc(specName(s)) + '</a>' : '', true],
+      [t('languages', 'Languages'), list(d.languages).join(', ')],
+      [t('workingHours', 'Working hours'), list(d.hours).join('; ')],
+      [t('registration', 'Registration number'), d.registration],
+    ].filter(function (f) { return f[1]; });
+    var waText = 'Hello Hodan Hospital, I would like to request an appointment with ' + d.name + ' (' + d.role + ').';
+    var mail = 'mailto:' + HH.email + '?subject=' + encodeURIComponent('Appointment request: ' + d.name) + '&body=' + encodeURIComponent(waText + '\n\nName:\nPhone:\nPreferred date:\n');
     root.innerHTML =
-      '<div class="profile-card"><div class="doc-photo" style="background:linear-gradient(150deg,' + TINT[i] + ',#fff)">' + portrait(d, INK[i]) + '</div>' +
-        '<div class="in"><a class="btn btn-red" href="' + bookUrl(d) + '">' + t('bookAppt', 'Book Appointment') + '</a>' +
-        '<a class="btn btn-ghost" href="tel:' + HH.tel + '">' + icon('i-phone', null, 18) + ' ' + HH.phone + '</a></div></div>' +
-      '<div><h2 style="font-size:26px;color:var(--primary-dark)">' + esc(d.name) + '</h2><p style="color:var(--accent);font-weight:600">' + esc(d.role) + '</p>' +
-        '<dl class="kv">' +
-        (s ? '<dt>' + t('department', 'Department') + '</dt><dd><a href="speciality.html?id=' + s.id + '">' + esc(specName(s)) + '</a></dd>' : '') +
-        (d.qual ? '<dt>' + t('qualifications', 'Qualifications') + '</dt><dd>' + esc(d.qual) + '</dd>' : '') +
-        (d.exp ? '<dt>' + t('experience', 'Experience') + '</dt><dd>' + esc(d.exp) + '</dd>' : '') +
-        '<dt>' + t('hospital', 'Hospital') + '</dt><dd>Hodan Hospital</dd><dt>' + t('location', 'Location') + '</dt><dd>' + esc(L(HH.address)) + '</dd></dl>' +
-        (d.bio ? '<h3 style="color:var(--primary-dark);margin-bottom:8px">' + t('aboutDoc', 'About') + '</h3><p style="color:var(--muted)">' + esc(d.bio) + '</p>' : '') +
-        '<p class="note">' + t('disclaimer', 'Doctor schedules may change. Please call to confirm availability.') + '</p></div>';
+      '<div class="dp-photo">' + portrait(d, INK[i]) + '</div>' +
+      '<div class="dp-summary"><span class="dp-eyebrow">' + t('navDoctors', 'Doctors') + ' · Hodan Hospital</span>' +
+        '<h1 id="pageTitle">' + esc(d.name) + '</h1><p class="dp-role">' + esc(d.role) + '</p>' +
+        (facts.length ? '<dl class="dp-facts">' + facts.map(function (f) { return '<div><dt>' + esc(f[0]) + '</dt><dd>' + (f[2] ? f[1] : esc(f[1])) + '</dd></div>'; }).join('') + '</dl>' : '') +
+      '</div>' +
+      '<aside class="dp-book" aria-labelledby="dpBookTitle"><h2 id="dpBookTitle">' + t('bookWithTitle', 'Book an appointment') + '</h2>' +
+        '<p class="dp-book-with">' + esc(d.name) + '</p>' +
+        '<a class="btn btn-red dp-btn" href="' + bookUrl(d) + '">' + icon('i-cal', null, 18) + ' ' + t('bookAppt', 'Book Appointment') + '</a>' +
+        '<a class="btn dp-btn dp-call" href="tel:' + HH.tel + '">' + icon('i-phone', null, 18) + ' ' + t('callNow', 'Call Now') + ' · ' + HH.phone + '</a>' +
+        '<div class="dp-alt"><a class="dp-alt-link" href="https://wa.me/' + HH.wa + '?text=' + encodeURIComponent(waText) + '" target="_blank" rel="noopener">' +
+          '<b>' + t('reqWhatsApp', 'Request on WhatsApp') + '</b><span>' + t('reqWhatsAppNote', 'Opens WhatsApp with your message ready. Press Send in WhatsApp to deliver it.') + '</span></a>' +
+        '<a class="dp-alt-link" href="' + mail + '"><b>' + t('reqEmail', 'Request by email') + '</b><span>' + t('reqEmailNote', 'Opens your email app with the request ready. Press Send in your email app to deliver it.') + '</span></a></div>' +
+        '<p class="dp-book-note">' + t('disclaimer', 'Doctor schedules may change. Please call to confirm availability.') + '</p>' +
+      '</aside>';
+    // detail sections: only those with confirmed content
+    var para = function (v) { return list(v).map(function (x) { return '<p>' + esc(x) + '</p>'; }).join(''); };
+    var bullets = function (v) { var a = list(v); return a.length ? '<ul class="ticks" style="grid-template-columns:1fr">' + a.map(function (x) { return '<li>' + esc(x) + '</li>'; }).join('') + '</ul>' : ''; };
+    var sections = [
+      ['about', t('aboutTheDoctor', 'About the Doctor'), para(d.bio)],
+      ['experience', t('experience', 'Experience'), bullets(d.experience)],
+      ['memberships', t('memberships', 'Memberships'), bullets(d.memberships)],
+      ['awards', t('awards', 'Awards & Achievements'), bullets(d.awards)],
+      ['research', t('research', 'Research & Publications'), bullets(d.research)],
+      ['expertise', t('expertise', 'Clinical Expertise'), bullets(d.expertise)],
+      ['treatments', t('treatmentsProcedures', 'Treatments & Procedures'), bullets(d.treatments)],
+      ['location', t('location', 'Location'), '<p><b>Hodan Hospital</b><br>' + esc(L(HH.address)) + '</p>' +
+        (HH.mapPin ? '<div class="map"><iframe title="Hodan Hospital location map" loading="lazy" referrerpolicy="no-referrer-when-downgrade" src="' + esc(HH.mapPin) + '"></iframe></div>' : '')],
+    ].filter(function (x) { return x[2]; });
+    $('docSections').innerHTML = sections.map(function (x) { return '<section class="dp-sec" id="dp-' + x[0] + '"><h2>' + esc(x[1]) + '</h2>' + x[2] + '</section>'; }).join('');
     var others = DOCTORS.filter(function (x) { return d.spec ? x.spec === d.spec && x !== d : false; });
     $('relatedWrap').style.display = others.length ? '' : 'none';
     $('related').innerHTML = others.map(docCard).join('');

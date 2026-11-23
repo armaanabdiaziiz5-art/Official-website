@@ -1989,7 +1989,12 @@ var T_SO = {
   h3title: 'Dhakhaatiir Takhasus leh iyo Qaybo', qIntlSub: 'Booqashadaada ku qorshee xarunta wicitaanka', specSub: 'Qaybaha caafimaadka iyo adeegyada ay bixiyaan.', docSub: 'Dhakhaatiirtayada iyo takhaasusleyaasha.',
   pServicesSub: 'Daryeel caafimaad oo dhammaystiran oo qof walba loogu talagalay.',
   prevDoctor: 'Dhakhtarkii hore', nextDoctor: 'Dhakhtarka xiga',
-  dcPause: 'Jooji wareegga dhakhaatiirta', dcPlay: 'Sii wad wareegga dhakhaatiirta', memberTitle: 'Kaarka Xubinnimada Isbitaalka Hodan',
+  dcPause: 'Jooji wareegga dhakhaatiirta', dcPlay: 'Sii wad wareegga dhakhaatiirta',
+  languages: 'Luqadaha', workingHours: 'Saacadaha shaqada', registration: 'Lambarka diiwaangelinta', bookWithTitle: 'Ballan qabso',
+  callNow: 'Hadda wac', reqWhatsApp: 'Ku codso WhatsApp', reqWhatsAppNote: 'WhatsApp ayaa furmaya iyadoo fariintaadu diyaar tahay. Riix Dir (Send) si aad u gudbiso.',
+  reqEmail: 'Ku codso iimeyl', reqEmailNote: 'Barnaamijka iimeylka ayaa furmaya iyadoo codsigu diyaar yahay. Riix Dir (Send) si aad u gudbiso.',
+  aboutTheDoctor: 'Ku saabsan Dhakhtarka', memberships: 'Xubinnimo', awards: 'Abaalmarino & Guulo', research: 'Cilmi-baaris & Daabacaad',
+  expertise: 'Khibradda Caafimaad', treatmentsProcedures: 'Daawaynta & Habraacyada', location: 'Goobta', memberTitle: 'Kaarka Xubinnimada Isbitaalka Hodan',
   memberIntro: 'Waxaa loogu talagalay inuu xubnaha, xaasaskooda iyo carruurtooda ka caawiyo helitaanka adeegyada caafimaadka.',
   confirmNote: 'Adeegyada iyo helitaanka dhakhaatiirta way is beddeli karaan. Fadlan wac isbitaalka si aad u xaqiijiso ka hor booqashadaada.'
 };
