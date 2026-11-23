@@ -546,3 +546,5 @@
   @media (max-width: 860px) { body { padding-bottom: calc(76px + env(safe-area-inset-bottom)); } }
   .doc-photo .badge { z-index: 1; }
   .doc-photo img { object-position: center 8%; }
+  .lead-photo { width: 96px; height: 96px; }
+  @media (max-width: 560px) { .lead-photo { width: 80px; height: 80px; } }

@@ -572,7 +572,7 @@ var DOCTORS = [
     "qual": "MBBS, MD",
     "exp": "28 years",
     "bio": "28 years; spine and joint replacement.",
-    "photo": null
+    "photo": "assets/img/doctors/mohammed-abdulkarim.jpg"
   },
   {
     "slug": "raed-salman",
@@ -582,7 +582,7 @@ var DOCTORS = [
     "qual": null,
     "exp": "29 years",
     "bio": "Damascus University; dental implants and cosmetic dentistry, Seoul; 29 years.",
-    "photo": null
+    "photo": "assets/img/doctors/raed-salman.jpg"
   },
   {
     "slug": "ahmed-omar",
@@ -602,7 +602,7 @@ var DOCTORS = [
     "qual": "MBBS, MD",
     "exp": "15 years",
     "bio": "15 years; University of Kassala; consultant physician, clinical fellow in gastroenterology and fitness nutrition.",
-    "photo": null
+    "photo": "assets/img/doctors/yasir-balla.jpg"
   },
   {
     "slug": "mohammed-albdulmunim",
@@ -612,7 +612,7 @@ var DOCTORS = [
     "qual": null,
     "exp": null,
     "bio": "Pregnancy follow-up, obstetric and gynecological operations, infertility care and ultrasound.",
-    "photo": null
+    "photo": "assets/img/doctors/mohammed-albdulmunim.jpg"
   },
   {
     "slug": "mustafa-ali-moalim",
@@ -632,7 +632,7 @@ var DOCTORS = [
     "qual": "MBBS, MD",
     "exp": "5 years",
     "bio": "5 years; cardiac diagnosis, treatment, patient assessment and diagnostic tests.",
-    "photo": null
+    "photo": "assets/img/doctors/fartun-hirey.jpg"
   },
   {
     "slug": "samira-abdirahman-mohamud",
@@ -642,7 +642,7 @@ var DOCTORS = [
     "qual": "OD, MS Clinical Optometry",
     "exp": "8 years",
     "bio": "8 years; UKM Malaysia; eye diseases and vision disorders.",
-    "photo": null
+    "photo": "assets/img/doctors/samira-abdirahman-mohamud.jpg"
   },
   {
     "slug": "zakarie-abdullahi",
@@ -652,7 +652,7 @@ var DOCTORS = [
     "qual": "MBChB, MD",
     "exp": "10 years",
     "bio": "10 years; skin, hair, nails, cosmetic services and dermatosurgery.",
-    "photo": null
+    "photo": "assets/img/doctors/zakarie-abdullahi.jpg"
   },
   {
     "slug": "ibrahim-hussein-ali",
@@ -662,7 +662,7 @@ var DOCTORS = [
     "qual": "MBBS, MD",
     "exp": "10 years",
     "bio": "10 years; Jilin University, internship in Hyderabad, residency in Turkey; researcher, lecturer; president of SOSEM.",
-    "photo": null
+    "photo": "assets/img/doctors/ibrahim-hussein-ali.jpg"
   },
   {
     "slug": "zahir-hassan",
@@ -672,7 +672,7 @@ var DOCTORS = [
     "qual": "MBBS, MD",
     "exp": null,
     "bio": "Khartoum University; over 15 years handling accident and emergency cases.",
-    "photo": null
+    "photo": "assets/img/doctors/zahir-hassan.jpg"
   },
   {
     "slug": "nasteha-hersi",
@@ -682,7 +682,7 @@ var DOCTORS = [
     "qual": "MBChB, MPH, MMed",
     "exp": "12 years",
     "bio": "12 years; senior pediatric consultant and public health specialist.",
-    "photo": null
+    "photo": "assets/img/doctors/nasteha-hersi.jpg"
   },
   {
     "slug": "mohamed-zakaria",
@@ -692,7 +692,7 @@ var DOCTORS = [
     "qual": "MBBS, MD",
     "exp": "15 years",
     "bio": "15 years; laparoscopic surgery, pediatric congenital anomalies and anorectal diseases.",
-    "photo": null
+    "photo": "assets/img/doctors/mohamed-zakaria.jpg"
   },
   {
     "slug": "abdulkadir-gadudow",
@@ -702,7 +702,7 @@ var DOCTORS = [
     "qual": "MBBS, MD",
     "exp": "15 years",
     "bio": "15 years; child growth, development and healthcare.",
-    "photo": null
+    "photo": "assets/img/doctors/abdulkadir-gadudow.jpg"
   },
   {
     "slug": "mohamoud-mohamed-mohamoud",
@@ -712,7 +712,7 @@ var DOCTORS = [
     "qual": "MBBS, MD",
     "exp": null,
     "bio": "10+ years; Tehran University of Medical Sciences, Iranian Board of Urology; open surgery, uro-oncology, endourology, laser surgery, ureteroscopy, cystoscopy and andrology.",
-    "photo": null
+    "photo": "assets/img/doctors/mohamoud-mohamed-mohamoud.jpg"
   },
   {
     "slug": "abdihakim-elmi",
@@ -722,7 +722,7 @@ var DOCTORS = [
     "qual": "MBBS, MSc, MD",
     "exp": "12 years",
     "bio": "12 years; Kassala University and Ain Shams University; lecturer in Mogadishu.",
-    "photo": null
+    "photo": "assets/img/doctors/abdihakim-elmi.jpg"
   },
   {
     "slug": "sefau-hawas-sherif",
@@ -774,7 +774,7 @@ var LEADERS = [
     "role": "Founder & CEO",
     "bio": "Medical doctor; MBBS, Kassala University, Sudan (2012); Diploma in Health Service Management, Sudan University. Over 10 years in hospital management and health services. Former founder and CEO of Somali Sudanese Specialized Hospital; co-founder and shareholder of Zazi Hospitals, Nairobi; business affiliation with Issak Pharmaceutical Company, founded in 2017.",
     "message": [],
-    "photo": null
+    "photo": "assets/img/leadership/mohamed-issak-omar.jpg"
   },
   {
     "name": "Dr. Keif Kheire",
@@ -788,56 +788,56 @@ var LEADERS = [
     "role": "Medical Director",
     "bio": "Pediatrician with experience in clinical leadership, healthcare management, patient care and medical administration; focuses on quality, clinical operations and patient safety.",
     "message": [],
-    "photo": null
+    "photo": "assets/img/leadership/abdulkadir-sh-omar-gadudow.jpg"
   },
   {
     "name": "Jibril Hussein Amalow",
     "role": "Procurement and Logistics Manager",
     "bio": "Experienced in supply chain management, strategic sourcing, inventory control, healthcare procurement, vendor relationships and logistics. Focuses on cost optimization and timely medical supplies.",
     "message": [],
-    "photo": null
+    "photo": "assets/img/leadership/jibril-hussein-amalow.jpg"
   },
   {
     "name": "Abdirizak Salad",
     "role": "Head of Pharmacy",
     "bio": "Over six years at Somali Sudanese Hospital; degree in Public Administration from University of Somalia and Diploma in Pharmacology from Salam University. Technical and management training.",
     "message": [],
-    "photo": null
+    "photo": "assets/img/leadership/abdirizak-salad.jpg"
   },
   {
     "name": "Omar Mohamed",
     "role": "Nursing Director",
     "bio": "Over 15 years in patient care and nursing administration; worked with MSF and SOS Children’s Village. Bachelor’s degrees in Nursing and Public Administration; other hospital management qualifications.",
     "message": [],
-    "photo": null
+    "photo": "assets/img/leadership/omar-mohamed.jpg"
   },
   {
     "name": "Abdalla Dahir Hassan",
     "role": "Chief Financial Officer (CFO)",
     "bio": "Master’s degree in Economics and Finance from Istanbul University. Experience in financial leadership, strategic growth, operational efficiency, healthcare, supply chains and work with UN agencies.",
     "message": [],
-    "photo": null
+    "photo": "assets/img/leadership/abdalla-dahir-hassan.jpg"
   },
   {
     "name": "Mahad Said",
     "role": "Operations Manager",
     "bio": "Experience in financial planning, budgeting, strategic financial management, accounting and financial analysis; financial process optimization, risk, compliance, team leadership and cost efficiency.",
     "message": [],
-    "photo": null
+    "photo": "assets/img/leadership/mahad-said.jpg"
   },
   {
     "name": "Abdikadir Baryare",
     "role": "HR Manager",
     "bio": "Over 10 years in management across institutions and positions; MBA, Mount Kenya University.",
     "message": [],
-    "photo": null
+    "photo": "assets/img/leadership/abdikadir-baryare.jpg"
   },
   {
     "name": "Dr. Mohamed Dahir Salad (Dr. Heydar)",
     "role": "Quality Control Director",
     "bio": "Internal Medicine physician and healthcare quality professional with over 10 years in Somalia’s healthcare system; clinical practice, quality control, research, education and professional training. Focuses on evidence-based practice, patient safety, clinical documentation, compliance and continuous improvement.",
     "message": [],
-    "photo": null
+    "photo": "assets/img/leadership/mohamed-dahir-salad-dr-heydar.jpg"
   }
 ];
 
