@@ -116,7 +116,68 @@
       '</div><div class="foot-bottom"><span>© ' + new Date().getFullYear() + ' Hodan Hospital. <span data-i18n="rights">All rights reserved.</span></span>' +
       '<span data-i18n="disclaimer">Doctor schedules may change. Please call to confirm availability.</span></div></div></footer>' +
       '<div class="float-call"><a class="wa" href="https://wa.me/' + HH.wa + '" target="_blank" rel="noopener" aria-label="WhatsApp"><svg width="28" height="28" viewBox="0 0 24 24" fill="#fff"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm5.3 14.2c-.2.6-1.3 1.2-1.8 1.3-.5 0-1 .2-3.3-.7a11.6 11.6 0 0 1-4.6-4c-.4-.5-1-1.8-1-3.3s.8-2.3 1.1-2.6c.3-.3.6-.4.8-.4h.6c.2 0 .4 0 .7.5l.9 2.2c.1.2.1.4 0 .6l-.4.6-.5.5c-.2.2-.3.4-.1.7.2.4.9 1.5 2 2.4 1.3 1.2 2.4 1.5 2.8 1.7.3.1.5.1.7-.1l.9-1.1c.2-.3.5-.3.8-.2l2 1c.3.1.5.2.6.3.1.2.1.7-.1 1.3z"/></svg></a>' +
-      '<a class="ph" href="tel:' + HH.tel + '" aria-label="Call Hodan Hospital">' + icon('i-phone', '#fff', 26) + '</a></div>';
+      '<a class="ph" href="tel:' + HH.tel + '" aria-label="Call Hodan Hospital">' + icon('i-phone', '#fff', 26) + '</a></div>' +
+      quickMenu() + searchDialog();
+  }
+
+  /* ---------- quick-access menu (left rail on desktop, bottom bar on mobile) ---------- */
+  var QUICK = [
+    { key: 'qaBook', en: 'Book Appointment', short: 'qaBookShort', enShort: 'Book', icon: 'i-cal', href: 'book-appointment.html', page: 'book' },
+    { key: 'qaAbout', en: 'About the Hospital', short: 'qaAboutShort', enShort: 'About', icon: 'i-hospital', href: 'about.html', page: 'about' },
+    { key: 'qaCheck', en: 'Health Check-ups', short: 'qaCheckShort', enShort: 'Check-ups', icon: 'i-clip', href: 'health-checkups.html', page: 'checkups' },
+    { key: 'qaDoctor', en: 'Find a Doctor', short: 'qaDoctorShort', enShort: 'Doctors', icon: 'i-doc', href: 'doctors.html', page: 'doctors' },
+    { key: 'qaSearch', en: 'Search', short: 'qaSearchShort', enShort: 'Search', icon: 'i-search', search: true }
+  ];
+  function quickMenu() {
+    return '<nav class="quick-rail" aria-label="' + esc(t('qaLabel', 'Quick access')) + '"><ul>' + QUICK.map(function (q) {
+      var label = t(q.key, q.en), cur = q.page && (PAGE === q.page || (q.page === 'doctors' && PAGE === 'doctor')) ? ' aria-current="page"' : '';
+      var inner = '<span class="qa-ic" aria-hidden="true">' + icon(q.icon, 'currentColor', 22) + '</span><span class="qa-tip">' + esc(label) + '</span><span class="qa-short" aria-hidden="true">' + esc(t(q.short, q.enShort)) + '</span>';
+      return '<li>' + (q.search
+        ? '<button type="button" class="qa-btn" data-open-search aria-haspopup="dialog" aria-label="' + esc(label) + '">' + inner + '</button>'
+        : '<a class="qa-btn" href="' + q.href + '" aria-label="' + esc(label) + '"' + cur + '>' + inner + '</a>') + '</li>';
+    }).join('') + '</ul></nav>';
+  }
+
+  /* ---------- site search (doctors, specialities, services, pages) ---------- */
+  function searchDialog() {
+    return '<div class="search-dlg" id="searchDlg" role="dialog" aria-modal="true" aria-labelledby="searchTitle" hidden>' +
+      '<div class="search-box"><div class="search-head"><h2 id="searchTitle">' + esc(t('searchTitle', 'Search Hodan Hospital')) + '</h2>' +
+      '<button type="button" class="close" data-close-search aria-label="' + esc(t('close', 'Close')) + '">&times;</button></div>' +
+      '<label class="sr-only" for="siteSearch">' + esc(t('searchTitle', 'Search Hodan Hospital')) + '</label>' +
+      '<div class="search-input">' + icon('i-search', '#5f6870', 20) + '<input id="siteSearch" type="search" autocomplete="off" placeholder="' + esc(t('searchPh', 'Search doctors, specialities, services…')) + '" /></div>' +
+      '<div id="searchResults" class="search-results" aria-live="polite"></div></div></div>';
+  }
+  function searchIndex() {
+    var idx = [];
+    DOCTORS.forEach(function (d) { var s = specById(d.spec); idx.push({ type: 'doctors', title: d.name, sub: d.role, href: 'doctor.html?id=' + d.slug, hay: [d.name, d.role, s ? s.en + ' ' + s.so : ''].join(' ') }); });
+    SPECS.forEach(function (s) { idx.push({ type: 'specs', title: specName(s), sub: s.den, href: 'speciality.html?id=' + s.id, hay: [s.en, s.so, s.den].concat(s.sections.map(function (x) { return x.items.join(' '); })).join(' ') }); });
+    SERVICES.forEach(function (g) { g.items.forEach(function (it) { idx.push({ type: 'services', title: it, sub: L(g), href: 'services.html#facilities', hay: it + ' ' + g.en }); }); });
+    PACKAGES.forEach(function (p) { idx.push({ type: 'pages', title: p.en, sub: t('navChecks', 'Health Checkups'), href: 'health-checkups.html', hay: p.en + ' ' + p.tests.join(' ') }); });
+    Object.keys(PAGES).forEach(function (k) { idx.push({ type: 'pages', title: PAGES[k].title, sub: PAGES[k].sub, href: 'page.html?id=' + k, hay: PAGES[k].title + ' ' + PAGES[k].sub }); });
+    return idx;
+  }
+  function runSearch() {
+    var q = $('siteSearch').value.trim().toLowerCase(), out = $('searchResults');
+    if (q.length < 2) { out.innerHTML = '<p class="search-hint">' + esc(t('searchHint', 'Type at least 2 letters, for example a doctor’s name, "cardiology" or "X-ray".')) + '</p>'; return; }
+    var words = q.split(/\s+/), hits = searchIndex().filter(function (r) { var h = r.hay.toLowerCase(); return words.every(function (w) { return h.indexOf(w) > -1; }); });
+    if (!hits.length) { out.innerHTML = '<p class="search-hint">' + esc(t('searchNone', 'No results. Try another word, or call +252 61 1678555.')) + '</p>'; return; }
+    var groups = [['doctors', t('navDoctors', 'Doctors')], ['specs', t('navSpec', 'Specialities')], ['services', t('navServices', 'Medical Services')], ['pages', t('searchPages', 'Pages & check-ups')]];
+    out.innerHTML = groups.map(function (g) {
+      var list = hits.filter(function (h) { return h.type === g[0]; }).slice(0, 8);
+      return list.length ? '<h3>' + esc(g[1]) + '</h3><ul>' + list.map(function (h) { return '<li><a href="' + h.href + '"><b>' + esc(h.title) + '</b><span>' + esc(h.sub || '') + '</span></a></li>'; }).join('') + '</ul>' : '';
+    }).join('');
+  }
+  var searchOpener = null;
+  function openSearch(from) {
+    var d = $('searchDlg'); if (!d) return;
+    searchOpener = from || document.activeElement;
+    d.hidden = false; document.body.classList.add('search-open');
+    runSearch(); $('siteSearch').focus();
+  }
+  function closeSearch() {
+    var d = $('searchDlg'); if (!d || d.hidden) return;
+    d.hidden = true; document.body.classList.remove('search-open');
+    if (searchOpener && searchOpener.focus) searchOpener.focus();
   }
 
   /* ---------- cards ---------- */
@@ -407,9 +468,21 @@
       tr.scrollBy({ left: (el.getAttribute('data-dir') === 'next' ? 1 : -1) * tr.clientWidth * 0.8, behavior: 'smooth' });
       return;
     }
+    if ((el = e.target.closest('[data-open-search]'))) { openSearch(el); return; }
+    if (e.target.closest('[data-close-search]') || e.target.id === 'searchDlg') { closeSearch(); return; }
     if (e.target.closest('[data-close]')) toggleDrawer(false);
   });
-  document.addEventListener('keydown', function (e) { if (e.key === 'Escape') toggleDrawer(false); });
+  document.addEventListener('input', function (e) { if (e.target.id === 'siteSearch') runSearch(); });
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape') { closeSearch(); toggleDrawer(false); }
+    var d = $('searchDlg');
+    if (e.key === 'Tab' && d && !d.hidden) { // keep focus inside the search dialog
+      var f = d.querySelectorAll('button, input, a[href]'), first = f[0], last = f[f.length - 1];
+      if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+      else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+    }
+  });
+  if (location.hash === '#search') setTimeout(function () { openSearch(); }, 0);
   window.addEventListener('scroll', function () { var h = $('header'); if (h) h.classList.toggle('scrolled', window.scrollY > 10); }, { passive: true });
 
   /* ---------- page setup ---------- */
