@@ -616,3 +616,16 @@
     .dp-facts div { grid-template-columns: 1fr; gap: 2px; }
     .dp-book { max-width: none; }
   }
+
+  /* ================= Homepage section colours (About -> Health Check-ups) =================
+     Each section starts with a short 64px blend from the colour above it. */
+  body[data-page="home"] #about { background: linear-gradient(180deg, #ffffff 0, #FFF8EE 64px, #FFF8EE 100%); }
+  body[data-page="home"] #about .stat { background: #fff; box-shadow: 0 4px 14px rgba(196,122,8,.06); }
+  body[data-page="home"] #specialities { background: linear-gradient(180deg, #FFF8EE 0, #F2F6FA 64px, #F2F6FA 100%); }
+  body[data-page="home"] #specialities .chip-tabs button:not(.active) { background: #fff; }
+  body[data-page="home"] #doctors { background: linear-gradient(180deg, #F2F6FA 0, #F5F3F0 64px, #F5F3F0 100%); }
+  body[data-page="home"] #doctors .doc { background: #fff; }
+  body[data-page="home"] #doctors .car-btns button { background: #fff; }
+  body[data-page="home"] #checkups { background: linear-gradient(180deg, #F5F3F0 0, #FFF7EA 64px, #FDEBDC 100%); }
+  body[data-page="home"] .after-checkups { background: linear-gradient(180deg, #FDEBDC 0, #ffffff 64px); }
+  body[data-page="home"] :is(#about, #specialities, #doctors, #checkups) .eyebrow { color: #9A5800; } /* darker orange: readable on the light section colours */
