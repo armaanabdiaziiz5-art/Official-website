@@ -551,7 +551,7 @@ var DOCTORS = [
     "qual": null,
     "exp": "41 years",
     "bio": "41 years in Italy; gastroenterology, digestive endoscopy, liver disease, endocrinology; former Internal Medicine Director in Italy.",
-    "photo": null
+    "photo": "assets/img/doctors/fuad-aamir.jpg"
   },
   {
     "slug": "keif-kheire",

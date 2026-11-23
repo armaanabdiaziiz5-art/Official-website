@@ -544,3 +544,4 @@
   .member-body .ticks { grid-template-columns: 1fr 1fr; margin: 16px 0 24px; }
   @media (max-width: 860px) { .member-card:has(.member-banner:not([hidden])) { grid-template-columns: 1fr; } .member-body { padding: 26px 22px; } .member-body .ticks { grid-template-columns: 1fr; } }
   @media (max-width: 860px) { body { padding-bottom: calc(76px + env(safe-area-inset-bottom)); } }
+  .doc-photo .badge { z-index: 1; }

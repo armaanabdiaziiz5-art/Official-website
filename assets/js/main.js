@@ -21,7 +21,7 @@
   // A portrait is shown only when the data has a photo (Public + Cleared in the CMS); otherwise initials.
   function portrait(person, color, cls) {
     return person.photo
-      ? '<img src="' + esc(person.photo) + '" alt="' + esc('Portrait of ' + person.name) + '" loading="lazy" decoding="async" class="' + (cls || '') + '" />'
+      ? '<img src="' + esc(person.photo) + '" alt="' + esc('Portrait of ' + person.name + (person.role ? ', ' + person.role : '') + ', Hodan Hospital') + '" loading="lazy" decoding="async" class="' + (cls || '') + '" />'
       : '<div class="avatar" style="color:' + color + '" role="img" aria-label="' + esc('Photo of ' + person.name + ' coming soon') + '">' + initials(person.name) + '</div>';
   }
   var OTHER = '_other'; // doctors without a department page
