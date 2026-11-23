@@ -548,3 +548,9 @@
   .doc-photo img { object-position: center 8%; }
   .lead-photo { width: 96px; height: 96px; }
   @media (max-width: 560px) { .lead-photo { width: 80px; height: 80px; } }
+
+  /* Overview box: hospital video fills the rounded box; gradient shows until it plays */
+  .about-visual .about-video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center; opacity: 0; transition: opacity .6s ease; }
+  .about-visual.video-playing .about-video { opacity: 1; }
+  .about-visual .about-badge { z-index: 1; }
+  .about-badge b { white-space: nowrap; }
