@@ -30,6 +30,11 @@
   var INK = ['#3a4349', '#c47a08', '#e8262d', '#1f8a4c', '#6b46c1', '#1d6fb0'];
 
   /* ---------- header / footer ---------- */
+  function pageLinks(menu) {
+    return Object.keys(PAGES).filter(function (k) { return PAGES[k].menu === menu; }).map(function (k) {
+      return '<a href="page.html?id=' + k + '"><span class="dot"></span>' + esc(PAGES[k].title) + '</a>';
+    }).join('');
+  }
   function header() {
     var groups = GROUPS.map(function (g) {
       return '<div><b style="display:block;padding:6px 12px;font-size:12px;letter-spacing:1px;text-transform:uppercase;color:var(--muted)">' + esc(L(g)) + '</b>' +
@@ -52,7 +57,9 @@
           '<div class="dropdown' + act('about') + '"><button type="button"><span data-i18n="navAbout">About Us</span>' + icon('i-chev', null, 16) + '</button>' +
             '<div class="dropdown-panel small"><a href="about.html"><span class="dot"></span><span data-i18n="navWho">Who We Are</span></a>' +
             '<a href="about.html#management"><span class="dot"></span><span data-i18n="navMgmt">Leadership</span></a>' +
-            '<a href="about.html#news"><span class="dot"></span><span data-i18n="navNews">News</span></a></div></div>' +
+            '<a href="news.html"><span class="dot"></span><span data-i18n="navNews">News</span></a>' +
+            '<a href="membership.html"><span class="dot"></span><span data-i18n="navMembership">Membership Card</span></a>' +
+            pageLinks('about') + pageLinks('research') + '</div></div>' +
           '<div class="dropdown' + act('specialities') + act('speciality') + '"><button type="button"><span data-i18n="navSpec">Specialities</span>' + icon('i-chev', null, 16) + '</button>' +
             '<div class="dropdown-panel mega">' + groups + '<a class="all" href="specialities.html" data-i18n="navAllSpecs">All specialities →</a></div></div>' +
           '<a href="doctors.html" class="' + act('doctors') + act('doctor') + '" data-i18n="navDoctors">Doctors</a>' +
@@ -61,7 +68,8 @@
             '<div class="dropdown-panel small"><a href="services.html"><span class="dot"></span><span data-i18n="navServices">Medical Services</span></a>' +
             '<a href="international-patients.html"><span class="dot"></span><span data-i18n="navIntl">Diaspora Patients</span></a>' +
             '<a href="book-appointment.html"><span class="dot"></span><span data-i18n="bookAppt">Book Appointment</span></a>' +
-            '<a href="contact.html#call-center"><span class="dot"></span><span data-i18n="callCenter">Call Center</span></a></div></div>' +
+            '<a href="contact.html#call-center"><span class="dot"></span><span data-i18n="callCenter">Call Center</span></a>' +
+            pageLinks('patients') + '<a href="membership.html"><span class="dot"></span><span data-i18n="navMembership">Membership Card</span></a></div></div>' +
           '<a href="contact.html" class="' + act('contact') + '" data-i18n="navContact">Contact</a>' +
         '</nav>' +
         '<div class="header-cta"><a href="tel:' + HH.tel + '" class="btn btn-ghost">' + icon('i-phone', null, 18) + ' <span data-i18n="callUs">Call Us</span></a>' +
@@ -74,6 +82,8 @@
         '<a href="specialities.html" data-i18n="navSpec">Specialities</a>' +
         '<a href="doctors.html" data-i18n="navDoctors">Doctors</a><a href="health-checkups.html" data-i18n="navChecks">Health Checkups</a>' +
         '<a href="services.html" data-i18n="navServices">Medical Services</a><a href="international-patients.html" data-i18n="navIntl">Diaspora Patients</a>' +
+        '<a href="news.html" data-i18n="navNews">News</a><a href="membership.html" data-i18n="navMembership">Membership Card</a>' +
+        Object.keys(PAGES).filter(function (k) { return PAGES[k].menu !== 'footer'; }).map(function (k) { return '<a href="page.html?id=' + k + '" class="sub">' + esc(PAGES[k].title) + '</a>'; }).join('') +
         '<a href="book-appointment.html" data-i18n="bookAppt">Book Appointment</a><a href="contact.html" data-i18n="navContact">Contact</a>' +
         '<a href="tel:' + HH.tel + '" class="btn btn-red" style="margin-top:20px;border:0">' + HH.phone + '</a>' +
       '</div></div>';
@@ -94,6 +104,8 @@
         '<li><a href="about.html" data-i18n="navAbout">About Us</a></li><li><a href="doctors.html" data-i18n="findDoctor">Find a Doctor</a></li>' +
         '<li><a href="health-checkups.html" data-i18n="navChecks">Health Checkups</a></li><li><a href="services.html" data-i18n="navServices">Medical Services</a></li>' +
         '<li><a href="international-patients.html" data-i18n="navIntl">Diaspora Patients</a></li><li><a href="book-appointment.html" data-i18n="bookAppt">Book Appointment</a></li>' +
+        '<li><a href="news.html" data-i18n="navNews">News</a></li><li><a href="membership.html" data-i18n="navMembership">Membership Card</a></li>' +
+        (PAGES['privacy-policy'] ? '<li><a href="page.html?id=privacy-policy">' + esc(PAGES['privacy-policy'].title) + '</a></li>' : '') +
       '</ul></div>' +
       '<div><h4 data-i18n="navSpec">Specialities</h4><ul>' + SPECS.slice(0, 7).map(function (s) {
         return '<li><a href="speciality.html?id=' + s.id + '">' + esc(specName(s)) + '</a></li>';
@@ -135,9 +147,30 @@
     return '<div class="fac"><div class="ic">' + icon(SVC_ICON[g.id] || 'i-plus', '#fff', 24) + '</div><h3>' + esc(L(g)) + '</h3><ul class="svc-list">' +
       g.items.map(function (x) { return '<li>' + esc(x) + '</li>'; }).join('') + '</ul></div>';
   }
+  function fmtDate(iso) {
+    if (!iso) return '';
+    var d = new Date(iso + 'T00:00:00Z');
+    return d.toLocaleDateString(lang === 'so' ? 'so-SO' : 'en-GB', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' });
+  }
   function newsCard(n) {
-    return '<article class="news"><div class="thumb">' + icon('i-news', '#fff', 46) + '</div><div class="body">' + (n.date ? '<small>' + esc(n.date) + '</small>' : '') + '<h3>' + esc(L(n)) + '</h3><p></p>' +
-      (n.url ? '<a class="more" href="' + n.url + '" target="_blank" rel="noopener">' + t('readMore', 'Read the story →') + '</a>' : '') + '</div></article>';
+    var link = n.body && n.body.length ? '<a class="more" href="news.html?id=' + n.id + '">' + t('readMore', 'Read the story →') + '</a>'
+      : n.url ? '<a class="more" href="' + esc(n.url) + '" target="_blank" rel="noopener">' + t('readSource', 'Read the source →') + '</a>' : '';
+    return '<article class="news"><div class="thumb">' + icon('i-news', '#fff', 46) + '</div><div class="body">' + (n.date ? '<small>' + esc(fmtDate(n.date)) + '</small>' : '') +
+      '<h3 lang="' + n.lang + '">' + esc(n.title) + '</h3><p></p>' + link + '</div></article>';
+  }
+  function richBlocks(body) {
+    var html = '', list = null;
+    body.forEach(function (b) {
+      if (b.h) html += '<h2>' + esc(b.h) + '</h2>';
+      else if (b.p) html += '<p>' + esc(b.p) + '</p>';
+      else if (b.ul) html += '<ul class="ticks" style="grid-template-columns:1fr">' + b.ul.map(function (x) { return '<li>' + esc(x) + '</li>'; }).join('') + '</ul>';
+    });
+    return html;
+  }
+  function videoCard(id) {
+    return '<button type="button" class="video-card" data-video="' + esc(id) + '" aria-label="' + esc(t('playVideo', 'Play Hodan Hospital video')) + '">' +
+      '<img src="https://i.ytimg.com/vi/' + encodeURIComponent(id) + '/hqdefault.jpg" alt="' + esc(t('videoAlt', 'Hodan Hospital video')) + '" loading="lazy" decoding="async" />' +
+      '<span class="play" aria-hidden="true"><svg width="28" height="28" viewBox="0 0 24 24" fill="#fff"><path d="M8 5v14l11-7z"/></svg></span></button>';
   }
 
   /* ---------- section renderers (run when their container exists) ---------- */
@@ -159,7 +192,41 @@
     el.innerHTML = PACKAGES.slice(0, n).map(pkgCard).join('');
   }
   function renderFac() { var el = $('facGrid'); if (el) el.innerHTML = SERVICES.map(svcGroup).join(''); }
-  function renderNews() { var el = $('newsGrid'); if (el) el.innerHTML = NEWS.map(newsCard).join(''); }
+  function renderNews() {
+    var el = $('newsGrid'); if (!el) return;
+    var n = +el.getAttribute('data-limit') || NEWS.length;
+    el.innerHTML = NEWS.slice(0, n).map(newsCard).join('');
+  }
+  function renderNewsPage() {
+    var el = $('newsPage'); if (!el) return;
+    var item = null;
+    NEWS.forEach(function (n) { if (n.id === params.get('id') && n.body && n.body.length) item = n; });
+    if (!item) { el.innerHTML = '<div class="news-grid">' + NEWS.map(newsCard).join('') + '</div>'; return; }
+    document.title = item.title + ' | Hodan Hospital';
+    $('pageTitle').textContent = item.title; $('pageTitle').setAttribute('lang', item.lang);
+    $('pageSub').textContent = fmtDate(item.date);
+    $('crumbName').textContent = item.title;
+    el.innerHTML = '<article class="prose article" lang="' + item.lang + '">' + richBlocks(item.body) +
+      (item.url ? '<p><a class="more" href="' + esc(item.url) + '" target="_blank" rel="noopener">' + t('readSource', 'Read the source →') + '</a></p>' : '') +
+      '<p><a class="btn btn-ghost" href="news.html">' + t('allNews', 'All news') + '</a></p></article>';
+  }
+  function renderInfoPage() {
+    var el = $('infoPage'); if (!el) return;
+    var id = params.get('id'), pg = PAGES[id] || PAGES[Object.keys(PAGES)[0]];
+    document.title = pg.title + ' | Hodan Hospital Mogadishu';
+    $('pageTitle').textContent = pg.title; $('pageSub').textContent = pg.sub; $('crumbName').textContent = pg.title;
+    el.innerHTML = richBlocks(pg.body);
+    var side = $('relatedPages');
+    if (side) side.innerHTML = Object.keys(PAGES).map(function (k) { return '<li><a href="page.html?id=' + k + '" class="' + (k === id ? 'on' : '') + '">' + esc(PAGES[k].title) + '</a></li>'; }).join('');
+  }
+  function renderMembership() {
+    var el = $('membershipText'); if (!el) return;
+    el.innerHTML = MEMBERSHIP.intro.map(function (p) { return '<p class="section-sub" style="margin-bottom:12px">' + esc(p) + '</p>'; }).join('') +
+      '<h3 style="margin:22px 0 10px;color:var(--primary-dark)">' + t('memberBenefits', 'Membership benefits') + '</h3>' +
+      '<ul class="ticks" style="grid-template-columns:1fr">' + MEMBERSHIP.benefits.map(function (b) { return '<li>' + esc(b) + '</li>'; }).join('') + '</ul>' +
+      '<p class="section-sub">' + esc(MEMBERSHIP.howTo) + '</p>';
+  }
+  function renderVideos() { var el = $('videoGrid'); if (el) el.innerHTML = VIDEOS.map(videoCard).join(''); }
   function renderMgmt() {
     var el = $('mgmtGrid'); if (!el) return;
     el.innerHTML = LEADERS.map(function (m) {
@@ -238,7 +305,7 @@
     root.innerHTML =
       '<h2>' + t('overview', 'Overview') + '</h2><p>' + esc(s.oen || s.den) + '</p>' +
       s.sections.filter(function (sec) { return sec.items.length; }).map(function (sec) {
-        return '<h2>' + esc(sec.h) + '</h2>' + (sec.items.length === 1 && sec.items[0].length > 90
+        return '<h2>' + esc(sec.planned ? t('plannedHead', 'Planned (not yet available)') : sec.h) + '</h2>' + (sec.planned ? '<p class="note" style="margin:0 0 12px">' + t('plannedNote', 'These services are planned and are not available yet.') + '</p>' : '') + (sec.items.length === 1 && sec.items[0].length > 90
           ? '<p>' + esc(sec.items[0]) + '</p>'
           : '<div class="treat">' + sec.items.map(function (x) { return '<div>' + icon('i-check', '#c47a08', 18) + esc(x) + '</div>'; }).join('') + '</div>');
       }).join('') +
@@ -307,6 +374,7 @@
     $('burger').addEventListener('click', function () { toggleDrawer(true); });
     renderSpecGrid(); renderDocTrack(); renderPkgs(); renderFac(); renderNews(); renderMgmt();
     renderAboutText(); renderCallCenter(); renderStats();
+    renderNewsPage(); renderInfoPage(); renderMembership(); renderVideos();
     renderFinder(); renderDoctorList(); renderSpeciality(); renderDoctor(); renderForm();
   }
 
@@ -326,6 +394,12 @@
       var tab = el.getAttribute('data-tab');
       if (tab === 'appt') location.href = 'book-appointment.html';
       if (tab === 'check') location.href = 'health-checkups.html';
+      return;
+    }
+    if ((el = e.target.closest('[data-video]'))) {
+      var vid = el.getAttribute('data-video');
+      el.outerHTML = '<div class="video-card playing"><iframe src="https://www.youtube-nocookie.com/embed/' + encodeURIComponent(vid) + '?autoplay=1&rel=0" title="' + esc(t('videoAlt', 'Hodan Hospital video')) +
+        '" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen loading="lazy"></iframe></div>';
       return;
     }
     if ((el = e.target.closest('[data-car]'))) {

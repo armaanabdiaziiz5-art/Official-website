@@ -1,7 +1,6 @@
 /* Hodan Hospital site content.
-   GENERATED from the hospital-supplied content in the Hodan-Hospital-Website CMS (doctors, departments,
-   services, leadership, packages, pages). Re-run gen-data to refresh. Photos appear only when the media
-   file is marked Public + Cleared in the CMS; otherwise the page shows a placeholder. */
+   GENERATED from the hospital-supplied content in the Hodan-Hospital-Website CMS. Photos appear only when the
+   media file is marked Public + Cleared in the CMS; otherwise the page shows an initials placeholder. */
 var HH = {
   "name": "Hodan Hospital",
   "tagline": "Quality Care, Safe Lives.",
@@ -107,6 +106,7 @@ var SPECS = [
       {
         "h": "VIP Delivery Rooms",
         "items": [
+          "VIP delivery rooms with midwifery nursing under specialist supervision."
         ]
       },
       {
@@ -247,6 +247,7 @@ var SPECS = [
           "Voice Disorders: hoarseness, vocal cord nodules, voice therapy and surgery.",
           "Swallowing Disorders: dysphagia assessment, speech therapy and surgical intervention where appropriate.",
           "Throat Infections & Inflammation: tonsillitis, pharyngitis, laryngitis and tonsillectomy.",
+          "Throat Cancer: assessment and management of cancers of the larynx, pharynx and esophagus, including surgery, radiation and chemotherapy.",
           "Laryngoscopy: examination of the voice box for tumors, inflammation and infections."
         ]
       },
@@ -343,6 +344,14 @@ var SPECS = [
           "Personalized treatment plans.",
           "Patient education on oral hygiene and disease prevention."
         ]
+      },
+      {
+        "h": "Planned (not yet available)",
+        "planned": true,
+        "items": [
+          "Expansion of orthodontic treatment with advanced clear aligners and digital scanning.",
+          "Introduction of CAD/CAM technology for same-day crowns and restorations."
+        ]
       }
     ]
   },
@@ -367,6 +376,7 @@ var SPECS = [
       {
         "h": "Advanced Facilities and Equipment",
         "items": [
+          "MRI and CT imaging, neuronavigation systems and operating rooms designed for neurological surgery."
         ]
       },
       {
@@ -466,6 +476,13 @@ var SPECS = [
         "h": "Facilities and patient support",
         "items": [
           "Consultation rooms, autorefractors, diagnostic suite, operating theatre with microscopes and phaco equipment, waiting and recovery spaces."
+        ]
+      },
+      {
+        "h": "Planned (not yet available)",
+        "planned": true,
+        "items": [
+          "OCT and fundus photography."
         ]
       }
     ]
@@ -642,7 +659,7 @@ var DOCTORS = [
     "role": "Emergency Medicine & Critical Care",
     "qual": "MBBS, MD",
     "exp": "10 years",
-    "bio": "10 years; Jilin University, internship in Hyderabad, residency in Turkey; researcher and lecturer.",
+    "bio": "10 years; Jilin University, internship in Hyderabad, residency in Turkey; researcher, lecturer; president of SOSEM.",
     "photo": null
   },
   {
@@ -828,7 +845,7 @@ var SERVICES = [
     "en": "Centres",
     "so": "Xarumo",
     "items": [
-          "Pain and Headache Management",
+      "Pain and Headache Management",
       "Musculoskeletal Health",
       "Dermatology"
     ]
@@ -838,7 +855,7 @@ var SERVICES = [
     "en": "Outpatient clinics",
     "so": "Kiliinikada bukaan-socodka",
     "items": [
-          "Oral Health and Dentistry Clinic",
+      "Oral Health and Dentistry Clinic",
       "Ophthalmology & Ophthalmic Surgery",
       "Ear, Nose & Throat Clinic",
       "Cardiology",
@@ -856,7 +873,7 @@ var SERVICES = [
     "en": "Inpatient & critical care",
     "so": "Bukaan-jiifka & daryeelka degdegga",
     "items": [
-          "ICU, NICU and Nursery",
+      "ICU, NICU and Nursery",
       "Operation & Anesthesia Unit"
     ]
   },
@@ -865,7 +882,7 @@ var SERVICES = [
     "en": "Hospital departments",
     "so": "Qaybaha isbitaalka",
     "items": [
-          "Laboratory Department",
+      "Laboratory Department",
       "Medical Imaging Department",
       "Pharmacy Services Department",
       "Emergency Room"
@@ -876,7 +893,7 @@ var SERVICES = [
     "en": "Diagnostic tests",
     "so": "Baaritaannada",
     "items": [
-          "X-rays",
+      "X-rays",
       "CT scans",
       "MRI scans",
       "Ultrasound",
@@ -977,30 +994,872 @@ var PACKAGES = [
       "Gamma-glutamyl transferase",
       "Rheumatology profile"
     ]
+  },
+  {
+    "id": "executive-health-package-men-2",
+    "icon": "i-users",
+    "en": "Executive Health Package Men (second version)",
+    "aud": "men",
+    "tests": [
+      "Consultation with Internal Medicine",
+      "Blood pressure monitoring",
+      "Vitamin profile",
+      "Thyroid profile",
+      "Diabetic screening",
+      "Iron profile",
+      "Gamma-glutamyl transferase",
+      "Rheumatology profile",
+      "Liver profile",
+      "Lipid profile",
+      "Renal profile",
+      "PSA test",
+      "Testosterone",
+      "CRP",
+      "CPK – serum",
+      "Urine routine",
+      "Complete hemogram (CBC)"
+    ]
   }
 ];
 
 var NEWS = [
   {
-    "date": "17 February 2025",
-    "en": "Hodan Hospital Officially Inaugurated by President Dr. Hassan Sheikh Mohamud",
-    "url": "https://sonna.so/en/president-hassan-sheikh-inaugurates-modern-hospital-in-mogadishu/"
+    "id": "news-002",
+    "date": "2026-11-03",
+    "title": "Isbitaalka Hodan oo qaabilay wafdi ka socda UNHCR Somalia",
+    "lang": "so",
+    "url": "https://hodanhospital.com/2026/11/03/isbitaalka-hodan-oo-qaabilay-wafdi-ka-socda-unhcr-somalia/",
+    "body": [
+      {
+        "p": "Muqdisho, 3 November 2026 – Isbitaalka Hodan ayaa kulan wada-shaqeyn dhanka adeegyada caafimaadka la yeeshay wafdi ka socday Hay’adda Qaxootiga Adduunka ee UNHCR Somalia."
+      },
+      {
+        "p": "Kulankan oo ka dhacay qolka shirarka ee isbitaalka, ayaa dhanka UNHCR waxaa ku metelayay mas’uuliyiin heer sare ah oo ka tirsan maamulka, maaliyadda iyo shaqaalaha. Dhanka Isbitaalka Hodan, waxaa shirka guddoominayay Mr. Abdulkhadir Baryare, Madaxa Shaqada iyo Shaqaalaha Isbitaalka. Agaasinka caafimaadka iyo Madaxa Horumarinta Isbitaalka ayaa sidoo kale ka qayb ahaa."
+      },
+      {
+        "p": "Shirkan ayaa looga hadlay sidii shaqaalaha hay’adda UNHCR, qoysaskooda iyo carruurtoodu uga faa’iideysan lahaayeen adeegyada caafimaadka ee Isbitaalka Hodan. Madaxda hay’adda ayaa sheegay in shaqaalahoodu ay xusheen Isbitaalka Hodan, taas oo maamulka isbitaalku soo dhaweeyay."
+      },
+      {
+        "p": "Ugu dambeyn, madaxda UNHCR Somalia ayaa indha-indheyn iyo kormeer ku sameeyay qaybaha kala duwan ee isbitaalka, iyaga oo u riyaaqay habdhismeedka iyo adeegyada baaxadda leh ee uu bixiyo Isbitaalka Hodan."
+      }
+    ]
   },
   {
-    "date": "",
-    "en": "Hodan Hospital Signs Agreement with BECO Electricity Company for Mutual Collaboration and Staff Healthcare",
-    "url": ""
+    "id": "news-003",
+    "date": "2026-10-27",
+    "title": "Isbitaalka Hodan oo kulan sagootin iyo duco ah u qabtay agaasimaha cusub ee Isbitaalka Jazeera",
+    "lang": "so",
+    "url": "https://hodanhospital.com/2026/10/27/isbitaalka-hodan-oo-kulan-sagootin-iyo-duco-ah-u-qabtay-agaasimihii-cusub-ee-isbitaalka-jazeera/",
+    "body": [
+      {
+        "p": "Isbitaalka Hodan ayaa kulan sagootin iyo duco ah u qabtay Dr. Omar Dahir, Agaasimihii Horumarinta Isbitaalka Hodan, oo hadda noqday Agaasimaha Guud ee Isbitaalka Jazeera."
+      },
+      {
+        "p": "Kulanka oo lagu qabtay Isbitaalka Hodan ayaa waxaa ka soo qaybgalay madaxda iyo maamulka isbitaalka."
+      },
+      {
+        "p": "Hawl-wadeennada iyo maamulka Isbitaalka Hodan ayaa qiray in Dr. Omar uu ahaa xubin muhiim ah oo ka tirsan isbitaalka, kaas oo muddo laba sano ah ka soo shaqaynayay horumarkiisa."
+      },
+      {
+        "p": "Dr. Omar ayaa lagu xusuusan doonaa doorkii wax-ku-oolka ahaa ee uu ka qaatay horumarinta Isbitaalka Hodan, isaga oo la yimid fikrado kala duwan oo waxtar u ahaa horumarka isbitaalka."
+      },
+      {
+        "p": "Agaasimaha Isbitaalka Hodan, Dr. Mohamed Isxaq Omar, ayaa ballanqaaday in Isbitaalka Hodan uu si dhow ula shaqayn doono Isbitaalka Jazeera, isaga oo uga mahadceliyay golaha maamulka Isbitaalka Jazeera magacaabista Dr. Omar Dahir."
+      }
+    ]
   },
   {
-    "date": "",
-    "en": "Hodan Hospital Signs Collaboration Agreement with Rikaab and Tabaarak ICT",
-    "url": ""
+    "id": "news-027",
+    "date": "2025-02-17",
+    "title": "Hodan Hospital Officially Inaugurated by President Dr. Hassan Sheikh Mohamud",
+    "lang": "en",
+    "url": "https://sonna.so/en/president-hassan-sheikh-inaugurates-modern-hospital-in-mogadishu/",
+    "body": []
   },
   {
+    "id": "news-026",
     "date": "",
-    "en": "Hodan Hospital Sponsors Iftar for SOMSUD — Somali Graduates from Sudan",
-    "url": ""
+    "title": "Hodan Hospital Signs Agreement with BECO Electricity Company for Mutual Collaboration and Staff Healthcare",
+    "lang": "en",
+    "url": "",
+    "body": []
+  },
+  {
+    "id": "news-025",
+    "date": "",
+    "title": "Hodan Hospital Signs Collaboration Agreement with Rikaab and Tabaarak ICT",
+    "lang": "en",
+    "url": "",
+    "body": []
+  },
+  {
+    "id": "news-024",
+    "date": "",
+    "title": "Hodan Hospital Sponsors Iftar for SOMSUD — Somali Graduates from Sudan",
+    "lang": "en",
+    "url": "",
+    "body": []
+  },
+  {
+    "id": "news-023",
+    "date": "",
+    "title": "Munaasabadda daahfurka ololaha qalliinnada lacag la’aanta ah",
+    "lang": "so",
+    "url": "",
+    "body": []
+  },
+  {
+    "id": "news-022",
+    "date": "",
+    "title": "Munaasabad mahadcelin iyo shahaado sharafeed loo guddoonsiiyay hawl-wadeennadii ololaha qalliinnada lacag la’aanta ah",
+    "lang": "so",
+    "url": "",
+    "body": []
+  },
+  {
+    "id": "news-021",
+    "date": "",
+    "title": "Safiirka Talyaaniga ee Soomaaliya oo booqasho rasmi ah ku yimid Hodan Hospital",
+    "lang": "so",
+    "url": "",
+    "body": []
+  },
+  {
+    "id": "news-020",
+    "date": "",
+    "title": "Hodan Hospital iyo Heelan Home Healthcare oo kala saxiixday heshiis iskaashi",
+    "lang": "so",
+    "url": "",
+    "body": []
+  },
+  {
+    "id": "news-019",
+    "date": "",
+    "title": "Isbitaalka Hodan oo soo dhaweeyay Wasiirka Wasaaradda Dekedaha iyo Gaadiidka Badda",
+    "lang": "so",
+    "url": "",
+    "body": []
+  },
+  {
+    "id": "news-018",
+    "date": "",
+    "title": "Isbitaalka Hodan iyo Isbitaalka Jaamacadda Bariga Afrika Boosaaso oo kala saxiixday heshiis",
+    "lang": "so",
+    "url": "",
+    "body": []
+  },
+  {
+    "id": "news-017",
+    "date": "",
+    "title": "Isbitaalka Hodan oo qaabilay Maareeyaha Guud ee Hay’adda NIRA",
+    "lang": "so",
+    "url": "",
+    "body": []
+  },
+  {
+    "id": "news-016",
+    "date": "",
+    "title": "Isbitaalka Hodan oo martigeliyay wafdi dhakhaatiir Talyaani ah oo ku takhasusay qalliinnada wadnaha carruurta",
+    "lang": "so",
+    "url": "",
+    "body": []
+  },
+  {
+    "id": "news-015",
+    "date": "",
+    "title": "Maamulka Isbitaalka Hodan oo booqasho shaqo ku tegay safaaradda Boqortooyada Sacuudi Carabiya, lana kulmay safiirka iyo madaxa Afrika ee Hay’adda King Salman",
+    "lang": "so",
+    "url": "",
+    "body": []
+  },
+  {
+    "id": "news-014",
+    "date": "",
+    "title": "Wafdi ka socda Yashoda Hospitals oo booqday Isbitaalka Hodan",
+    "lang": "so",
+    "url": "",
+    "body": []
+  },
+  {
+    "id": "news-013",
+    "date": "",
+    "title": "Agaasime ku-xigeenka caafimaadka oo booqasho shaqo ku tagay Acibadem, Turkey",
+    "lang": "so",
+    "url": "",
+    "body": []
+  },
+  {
+    "id": "news-012",
+    "date": "",
+    "title": "Isbitaalka Hodan oo soo dhaweeyay Sumaya Xasan Abshir, kaalinta koowaad ee fasallada 8-aad ee gobolka Banaadir",
+    "lang": "so",
+    "url": "",
+    "body": []
+  },
+  {
+    "id": "news-011",
+    "date": "",
+    "title": "Maamulka Isbitaalka Hodan oo soo dhaweeyay ardayga kaalinta koowaad ka galay imtixaanka dugsiyada sare",
+    "lang": "so",
+    "url": "",
+    "body": []
+  },
+  {
+    "id": "news-010",
+    "date": "",
+    "title": "Hodan Hospital iyo Vitality Vitamin Drips oo kala saxiixday heshiis iskaashi",
+    "lang": "so",
+    "url": "",
+    "body": []
+  },
+  {
+    "id": "news-009",
+    "date": "",
+    "title": "Tababar ku saabsan suuxdinta iyo daryeelka bukaanka oo loo qabtay xirfadlayaal ka socda Isbitaalka Dankaab ee Kismaayo",
+    "lang": "so",
+    "url": "",
+    "body": []
+  },
+  {
+    "id": "news-008",
+    "date": "",
+    "title": "Wafdi ka socda Hay’adda Duulista Rayidka Soomaaliyeed oo booqday Isbitaalka Hodan",
+    "lang": "so",
+    "url": "",
+    "body": []
+  },
+  {
+    "id": "news-007",
+    "date": "",
+    "title": "Guddoomiyaha Guddiga Madaxa-bannaan ee Xuquuqul Insaanka Qaranka oo booqasho ku timid Isbitaalka Hodan",
+    "lang": "so",
+    "url": "",
+    "body": []
+  },
+  {
+    "id": "news-006",
+    "date": "",
+    "title": "Guddoomiyaha Baarlamaanka Koonfur Galbeed oo soo booqday Isbitaalka Hodan",
+    "lang": "so",
+    "url": "",
+    "body": []
+  },
+  {
+    "id": "news-005",
+    "date": "",
+    "title": "Tababar loo qabtay ardayda kulliyadaha Daawada iyo Qalliinka Jaamacadda Ummadda Soomaaliyeed",
+    "lang": "so",
+    "url": "",
+    "body": []
+  },
+  {
+    "id": "news-004",
+    "date": "",
+    "title": "Guddoonka Golaha Mihnadlayaasha Caafimaadka Qaranka (NHPC) oo booqasho shaqo ku yimid Isbitaalka Hodan",
+    "lang": "so",
+    "url": "",
+    "body": [
+      {
+        "p": "Guddoonka Golaha Mihnadlayaasha Caafimaadka Qaranka (NHPC) ayaa booqasho shaqo ku yimid Isbitaalka Hodan, halkaas oo ay kula kulmeen maamulka isbitaalka."
+      },
+      {
+        "p": "Wafdiga booqashada ku yimid isbitaalka waxaa ka mid ahaa Guddoomiye Ku-xigeenka Golaha, Mr. Imran Ahmed, Xoghayaha Golaha, Dr. Omar Ahmed Qadi, qaar ka mid ah hawl-wadeennada Golaha iyo xubno ka tirsan Guddiga Sare ee Golaha Mihnadlayaasha Caafimaadka Qaranka."
+      },
+      {
+        "p": "Wafdiga waxaa soo dhaweeyay Dr. Mohamed Isxaq Omar, Agaasimaha Isbitaalka Hodan. Kulanka ayay labada dhinac ku yeesheen is-weydaarsi afkaar ku saabsan sidii loo xoojin lahaa wada-shaqeynta iyo iskaashiga u dhexeeya Golaha iyo Isbitaalka Hodan."
+      },
+      {
+        "p": "Kulanka ka dib, wafdiga Golaha NHPC ayaa soo indha-indheeyay qaybaha kala duwan ee Isbitaalka Hodan, iyaga oo xog ka helay adeegyada caafimaadka ee isbitaalku bixiyo iyo hawlaha kala duwan ee uu qabto."
+      },
+      {
+        "p": "Booqashadan ayaa qayb ka ah dadaallada lagu xoojinayo xiriirka iyo wada-shaqeynta hay’adaha caafimaadka, si loo horumariyo adeegyada caafimaadka iyo tayada daryeelka bukaannada."
+      }
+    ]
+  },
+  {
+    "id": "news-001",
+    "date": "",
+    "title": "Wafdiga Isbitaalka Hodan oo booqday Isbitaalka Taqasusiga ah ee Jazeera",
+    "lang": "so",
+    "url": "",
+    "body": [
+      {
+        "p": "Booqashadan oo ahayd sidii labada isbitaal ay iskaga kaashan lahaayeen wada-shaqeyn joogto ah iyo horumarinta adeegyada caafimaadka, ayaa wafdiga ka socday Isbitaalka Hodan waxaa ku soo dhaweeyay Isbitaalka Jazeera Agaasimaha Guud ee Isbitaalka Jazeera, Dr. Omar Dahir."
+      },
+      {
+        "p": "Kadib shirar waqti kooban qaatay, wafdiga Isbitaalka Hodan ayaa soo kormeeray qaybaha kala duwan ee Isbitaalka Taqasusiga ah ee Jazeera."
+      },
+      {
+        "p": "Agaasimaha Guud ee Isbitaalka Hodan, Dr. Maxamed Isxaq Cumar, ayaa uga mahadceliyay dhiggiisa Isbitaalka Jazeera iyo maamulka kale soo dhaweynta diirran ay u sameeyeen wafdigiisa, isaga oo ballanqaaday in kulamo kale iyo heshiisyo wada-shaqeyn ay kala saxiixan doonaan labada isbitaal."
+      }
+    ]
   }
+];
+
+var PAGES = {
+  "privacy-policy": {
+    "title": "Privacy Policy",
+    "menu": "footer",
+    "icon": "i-shield",
+    "sub": "How Hodan Hospital handles personal information.",
+    "body": [
+      {
+        "p": "Hodan Hospital respects the privacy of our patients, visitors, app users, and website users. This Privacy Policy explains how we collect, use, protect, and share personal information when you use Hodan Hospital’s website, mobile application, or related digital services."
+      },
+      {
+        "h": "Information We Collect"
+      },
+      {
+        "p": "When you use our services, we may collect information such as:"
+      },
+      {
+        "ul": [
+          "Name and contact information",
+          "Phone number and email address",
+          "Account and registration information",
+          "Appointment or service-request information",
+          "Information you choose to provide when communicating with Hodan Hospital",
+          "Device information, IP address, browser type, operating system, and other technical information",
+          "Usage information relating to how you use our website or application"
+        ]
+      },
+      {
+        "p": "Where a service requires additional information, including health-related or location information, we will only collect what is reasonably necessary for that service."
+      },
+      {
+        "h": "How We Use Your Information"
+      },
+      {
+        "p": "Hodan Hospital may use personal information to:"
+      },
+      {
+        "ul": [
+          "Provide and maintain our services",
+          "Manage user accounts and registrations",
+          "Process appointment or service requests",
+          "Communicate with users by phone, email, SMS, or app notifications",
+          "Improve the performance, security, and functionality of our website and application",
+          "Respond to questions, complaints, and support requests",
+          "Protect our users, systems, and services",
+          "Meet applicable legal, regulatory, or administrative requirements"
+        ]
+      },
+      {
+        "h": "Sharing of Information"
+      },
+      {
+        "p": "Hodan Hospital does not sell personal information."
+      },
+      {
+        "p": "We may share information where necessary with trusted service providers, healthcare partners, technical service providers, or other organizations that support the delivery of our services."
+      },
+      {
+        "p": "Information may also be disclosed where required by law, court order, government authority, or where necessary to protect the safety, rights, or property of Hodan Hospital, our users, or the public."
+      },
+      {
+        "p": "Where appropriate, information may also be shared with your consent."
+      },
+      {
+        "h": "Data Retention"
+      },
+      {
+        "p": "Hodan Hospital retains personal information only for as long as reasonably necessary for the purpose for which it was collected, for service delivery, security, legal compliance, record keeping, or legitimate hospital operations."
+      },
+      {
+        "p": "Certain information may need to be retained for longer periods where required for medical, financial, administrative, or legal purposes."
+      },
+      {
+        "h": "Data Security"
+      },
+      {
+        "p": "Hodan Hospital takes reasonable administrative, technical, and organizational measures to protect personal information against unauthorized access, loss, misuse, alteration, or disclosure."
+      },
+      {
+        "p": "These measures may include secure user accounts, access controls, system monitoring, backups, restricted administrative access, and other security safeguards."
+      },
+      {
+        "p": "However, no internet transmission or electronic storage system can be guaranteed to be completely secure."
+      },
+      {
+        "h": "Delete Your Personal Data"
+      },
+      {
+        "p": "You may request access to, correction of, or deletion of personal information that Hodan Hospital has collected about you. Where available, certain information may be updated directly through your account or application settings. You may also submit a request to update, correct, or delete your personal information by contacting us at: info@hodanhospital.com."
+      },
+      {
+        "p": "Please note that Hodan Hospital may need to retain certain information where required for healthcare, legal, financial, security, regulatory, or other legitimate operational purposes."
+      },
+      {
+        "h": "Your Information"
+      },
+      {
+        "p": "You may contact Hodan Hospital to request access to, correction of, or deletion of personal information you have provided, where appropriate."
+      },
+      {
+        "p": "Some information may not be deleted immediately where Hodan Hospital is required to retain it for healthcare, legal, financial, security, or operational purposes."
+      },
+      {
+        "h": "Children’s Privacy"
+      },
+      {
+        "p": "Some Hodan Hospital services may involve children or minors. Where appropriate, information relating to a child may be collected or managed with the involvement or consent of a parent, guardian, or legally authorized representative."
+      },
+      {
+        "h": "Third-Party Services and Links"
+      },
+      {
+        "p": "Our website or application may contain links to third-party websites or use services provided by external providers."
+      },
+      {
+        "p": "Hodan Hospital is not responsible for the privacy practices of third-party websites or services. Users should review their privacy policies before providing personal information."
+      },
+      {
+        "h": "Changes to This Privacy Policy"
+      },
+      {
+        "p": "Hodan Hospital may update this Privacy Policy from time to time to reflect changes in our services, systems, or privacy practices."
+      },
+      {
+        "p": "Any updated version will be published on our website or application with the revised date."
+      },
+      {
+        "h": "Contact Us"
+      },
+      {
+        "p": "If you have questions or concerns regarding this Privacy Policy or how your information is handled, please contact Hodan Hospital through:"
+      },
+      {
+        "p": "Hodan Hospital, Mogadishu, Somalia. Email: info@hodanhospital.com"
+      },
+      {
+        "p": "Last Updated: February 1, 2026"
+      }
+    ]
+  },
+  "research-publications": {
+    "title": "Articles & Publications: Research Center",
+    "menu": "research",
+    "icon": "i-file",
+    "sub": "Hodan Hospital Research Center.",
+    "body": [
+      {
+        "h": "Hodan Hospital Research Center"
+      },
+      {
+        "p": "The Research Center at Hodan Hospital is dedicated to scientific research in infectious diseases, chronic conditions, maternal and child health, and healthcare infrastructure. Through clinical research and evidence-based studies, the Center aims to improve patient care and healthcare outcomes, contribute to global health knowledge, and drive sustainable, impactful improvements in Somalia’s healthcare landscape."
+      },
+      {
+        "h": "Research Focus Areas"
+      },
+      {
+        "ul": [
+          "Infectious diseases",
+          "Chronic conditions",
+          "Maternal and child health",
+          "Healthcare infrastructure"
+        ]
+      },
+      {
+        "h": "Multidisciplinary Research"
+      },
+      {
+        "p": "Researchers, doctors, nurses and other healthcare professionals collaborate to investigate pressing health challenges and identify evidence-based solutions for improving patient outcomes. Research may include analyzing healthcare data, assessing the effectiveness of current medical practices and exploring environmental, social and genetic influences on health."
+      },
+      {
+        "h": "Partnerships and Innovation"
+      },
+      {
+        "p": "Hodan Hospital is building partnerships with universities, global research networks and other stakeholders to make healthcare solutions more accessible and effective across Africa. The goal is to translate research discoveries into practical healthcare models and new healthcare strategies."
+      }
+    ]
+  },
+  "education-training": {
+    "title": "Education & Training: Health Training Center",
+    "menu": "research",
+    "icon": "i-users",
+    "sub": "Hodan Hospital Health Training Center.",
+    "body": [
+      {
+        "h": "Overview"
+      },
+      {
+        "p": "The Health Training Center at Hodan Hospital is designed to provide comprehensive training and skills development for healthcare professionals. Recognizing the evolving healthcare environment, the center offers specialized programs intended to strengthen the knowledge and expertise of doctors, nurses, support staff and administrators."
+      },
+      {
+        "h": "Training Areas"
+      },
+      {
+        "ul": [
+          "Patient care",
+          "Medical procedures",
+          "Emergency response",
+          "Infection control",
+          "Healthcare management",
+          "Medical technologies"
+        ]
+      },
+      {
+        "h": "Learning Methods and Facilities"
+      },
+      {
+        "p": "Modern learning tools, interactive workshops, high-quality simulators and practical simulation setups. Training combines theoretical knowledge with hands-on experience. Simulation labs are intended to enable healthcare professionals to practice complex procedures in a safe, controlled environment and strengthen confidence and clinical skills before applying them in real-world settings."
+      },
+      {
+        "h": "Target Participants"
+      },
+      {
+        "p": "Doctors, nurses, support staff and healthcare administrators."
+      },
+      {
+        "h": "Training Objectives and Continuous Professional Development"
+      },
+      {
+        "p": "The center aims to prepare healthcare workers to deliver high-quality care and address emerging challenges. Continuous education and professional development support current medical knowledge and evidence-based practices, with the goal of improving patient care and outcomes."
+      },
+      {
+        "h": "Interdisciplinary Collaboration"
+      },
+      {
+        "p": "Training emphasizes efficient teamwork across healthcare disciplines, improved coordination of patient care, reduction of errors and collaborative approaches to treatment."
+      },
+      {
+        "h": "Leadership and Management Training"
+      },
+      {
+        "p": "The center also offers leadership and managerial training for healthcare administrators, helping them develop the skills needed to lead and manage modern healthcare systems."
+      },
+      {
+        "h": "Commitment to Healthcare in Somalia"
+      },
+      {
+        "p": "Through this initiative, Hodan Hospital aims to develop a skilled and competent workforce that meets the evolving demands of Somalia’s healthcare sector. The center supports continued learning in medical practices, technologies and standards of care."
+      }
+    ]
+  },
+  "research-training": {
+    "title": "Research & Training Centre (HHRTC)",
+    "menu": "research",
+    "icon": "i-flask",
+    "sub": "Hodan Hospital Research and Training Centre (HHRTC).",
+    "body": [
+      {
+        "h": "Hodan Hospital Research and Training Centre (HHRTC)"
+      },
+      {
+        "p": "Hodan Hospital is pleased to announce the establishment of the Hodan Hospital Research and Training Centre (HHRTC), a dedicated platform for advancing research, professional training, innovation and clinical excellence."
+      },
+      {
+        "p": "HHRTC will serve as a centre for continuous learning, knowledge sharing, clinical research and professional development, supporting healthcare workers in strengthening their skills and contributing to improved patient care."
+      },
+      {
+        "h": "Centre Leadership"
+      },
+      {
+        "p": "The Centre will be headed by Dr. Yassir Balla, Senior Consultant in Internal Medicine and Gastroenterology at Hodan Hospital. Under his leadership, HHRTC aims to promote a strong culture of research, training, innovation and evidence-based healthcare."
+      },
+      {
+        "h": "Core pillars"
+      },
+      {
+        "ul": [
+          "Research",
+          "Education",
+          "Innovation",
+          "Excellence"
+        ]
+      }
+    ]
+  },
+  "conditions-treated": {
+    "title": "Diseases & Conditions Treated",
+    "menu": "patients",
+    "icon": "i-stetho",
+    "sub": "Diseases and conditions treated at Hodan Hospital.",
+    "body": [
+      {
+        "h": "Overview"
+      },
+      {
+        "p": "At Hodan Hospital, comprehensive healthcare for a wide range of conditions, focusing on prevention, diagnosis and treatment to promote overall well-being. A multidisciplinary team aims to manage acute and chronic conditions and provide personalized care using diagnostic tools, surgical techniques where appropriate, and post-operative recovery protocols."
+      },
+      {
+        "h": "Gastrointestinal Disorders"
+      },
+      {
+        "ul": [
+          "Gastroesophageal reflux disease (GERD)",
+          "Peptic ulcers",
+          "Crohn’s disease",
+          "Irritable bowel syndrome (IBS)",
+          "Liver diseases (cirrhosis, hepatitis)",
+          "Gallstones"
+        ]
+      },
+      {
+        "h": "Respiratory Conditions"
+      },
+      {
+        "ul": [
+          "Asthma",
+          "Chronic obstructive pulmonary disease (COPD)",
+          "Pneumonia",
+          "Tuberculosis",
+          "Other lung diseases"
+        ]
+      },
+      {
+        "h": "Diabetes and Endocrine Disorders"
+      },
+      {
+        "ul": [
+          "Type 1 and Type 2 diabetes",
+          "Thyroid disorders (hypothyroidism, hyperthyroidism)",
+          "Adrenal disorders"
+        ]
+      },
+      {
+        "h": "Neurological Disorders"
+      },
+      {
+        "ul": [
+          "Alzheimer’s disease",
+          "Parkinson’s disease",
+          "Multiple sclerosis",
+          "Epilepsy",
+          "Stroke",
+          "Headaches and migraines"
+        ]
+      },
+      {
+        "h": "Kidney and Urinary Disorders"
+      },
+      {
+        "ul": [
+          "Chronic kidney disease",
+          "Kidney stones",
+          "Urinary tract infections (UTIs)",
+          "Bladder issues",
+          "Incontinence"
+        ]
+      },
+      {
+        "h": "Cardiovascular Diseases"
+      },
+      {
+        "ul": [
+          "Hypertension",
+          "Heart disease",
+          "Arrhythmias",
+          "Stroke",
+          "Heart failure",
+          "Peripheral artery disease"
+        ]
+      },
+      {
+        "h": "Reproductive Health"
+      },
+      {
+        "ul": [
+          "Menstrual disorders",
+          "Polycystic ovary syndrome (PCOS)",
+          "Infertility",
+          "Pregnancy-related conditions"
+        ]
+      },
+      {
+        "h": "Dermatological Conditions"
+      },
+      {
+        "ul": [
+          "Acne",
+          "Eczema",
+          "Psoriasis",
+          "Skin cancer",
+          "Fungal or bacterial infections"
+        ]
+      },
+      {
+        "h": "Infectious Diseases"
+      },
+      {
+        "p": "Bacterial, viral and parasitic infections, including HIV/AIDS, malaria, tuberculosis and hepatitis."
+      },
+      {
+        "h": "Musculoskeletal Disorders"
+      },
+      {
+        "ul": [
+          "Arthritis (rheumatoid arthritis, osteoarthritis)",
+          "Osteoporosis",
+          "Fractures",
+          "Back pain",
+          "Sports injuries"
+        ]
+      },
+      {
+        "h": "Allergies and Immune System Disorders"
+      },
+      {
+        "ul": [
+          "Seasonal allergies",
+          "Asthma",
+          "Food allergies",
+          "Immune deficiencies"
+        ]
+      }
+    ]
+  },
+  "ambulance": {
+    "title": "Ambulance & Emergency Transport",
+    "menu": "patients",
+    "icon": "i-amb",
+    "sub": "Ambulance and emergency transport.",
+    "body": [
+      {
+        "h": "Hodan Hospital Ambulance"
+      },
+      {
+        "p": "Hodan Hospital’s ambulance service is an essential part of its emergency medical response system. It aims to provide swift and effective medical attention, combining efficiency, skilled personnel and community engagement to support public health and safety."
+      },
+      {
+        "h": "24/7 Availability"
+      },
+      {
+        "p": "The ambulance service operates around the clock to respond to emergencies."
+      },
+      {
+        "h": "Medical Equipment"
+      },
+      {
+        "p": "Each ambulance is described as equipped with defibrillators, oxygen supplies and monitoring systems to provide critical care en route."
+      },
+      {
+        "h": "Skilled Personnel"
+      },
+      {
+        "p": "Teams consist of trained paramedics and emergency medical technicians (EMTs) skilled in pre-hospital care and emergency management."
+      },
+      {
+        "h": "Rapid Response Times"
+      },
+      {
+        "p": "The service prioritizes quick response and timely care."
+      },
+      {
+        "h": "Coordination with Hospital Services"
+      },
+      {
+        "ul": [
+          "Seamless Communication: communication with Hodan Hospital to update patient conditions and prepare for arrival.",
+          "Direct Transfer Protocols: streamlined patient transfers to minimize treatment delays."
+        ]
+      },
+      {
+        "h": "Contact"
+      },
+      {
+        "p": "Helpline: 1234. Service: 24/7."
+      }
+    ]
+  },
+  "it-excellence": {
+    "title": "IT Excellence at Hodan Hospital",
+    "menu": "about",
+    "icon": "i-scan",
+    "sub": "Technology that supports patient care.",
+    "body": [
+      {
+        "h": "Overview"
+      },
+      {
+        "p": "Hodan Hospital is committed to IT excellence by leveraging modern technologies to enhance patient care, streamline hospital operations and improve the healthcare experience. Its focus on innovation supports efficient, secure and effective healthcare services."
+      },
+      {
+        "h": "Paperless System"
+      },
+      {
+        "p": "Hodan Hospital has transitioned to a paperless environment, reducing reliance on physical documentation and enabling authorized access to securely stored patient information across departments."
+      },
+      {
+        "ul": [
+          "Electronic Health Records (EHR): comprehensive digital records support accurate and timely access to patient data for healthcare providers, diagnosis and treatment.",
+          "Digital Prescriptions and Orders: doctors enter prescriptions and medical orders directly into the system, supporting patient safety and reducing errors.",
+          "Efficiency and Sustainability: reduced paper use supports operational efficiency and sustainability."
+        ]
+      },
+      {
+        "h": "Customized ERP System"
+      },
+      {
+        "p": "A customized ERP solution integrating patient management and administrative hospital functions."
+      },
+      {
+        "ul": [
+          "Seamless Operations: automation of patient registration, billing, inventory management, staff scheduling and other administrative processes supports coordination across departments.",
+          "Real-time Data Access: updated information supports timely decision-making by authorized medical staff and administrators.",
+          "Resource Optimization: inventory management, resource allocation and streamlined financial processes support cost control and operational efficiency."
+        ]
+      },
+      {
+        "h": "Advanced Medical Technologies"
+      },
+      {
+        "ul": [
+          "Communication: centralized audiovisual communication technology installed in inpatient and outpatient departments, connecting patients and healthcare providers and supporting timely communication.",
+          "Advanced Diagnostic Systems: integration with the hospital IT network supports access to medical imaging, laboratory testing and other diagnostic results."
+        ]
+      }
+    ]
+  },
+  "patient-safety": {
+    "title": "Patient Safety & Comfort",
+    "menu": "patients",
+    "icon": "i-shield",
+    "sub": "Our top priority at Hodan Hospital.",
+    "body": [
+      {
+        "h": "Our Top Priority at Hodan Hospital"
+      },
+      {
+        "p": "At Hodan Hospital, patient safety is at the heart of everything we do. We are dedicated to providing high-quality healthcare through strict safety protocols, continuous staff training and modern medical practices. Our commitment to excellence drives us to create a safe, supportive and healing environment for every patient."
+      },
+      {
+        "h": "Modern Facilities and Patient Comfort — planned improvements"
+      },
+      {
+        "p": "To further enhance patient care, Hodan Hospital is preparing fully equipped rooms designed with modern technology and advanced medical equipment. These rooms are intended to provide a safe, efficient and comfortable space for patients and healthcare providers. Planned ergonomic furniture aims to enhance patient comfort and support recovery and well-being."
+      },
+      {
+        "h": "Patient-Centered Care"
+      },
+      {
+        "p": "Hodan Hospital strives to bring safety, comfort and innovation together to improve the healthcare experience. Every patient matters, and their safety and well-being remain our top priority."
+      },
+      {
+        "p": "Hodan Hospital – Your Health, Our Commitment"
+      }
+    ]
+  }
+};
+
+var MEMBERSHIP = {
+  "intro": [
+    "Hodan Hospital is pleased to introduce its Membership Card, designed to help members, their spouses and children access healthcare services.",
+    "Hodan Hospital is committed to supporting the health and well-being of families through quality care and a more accessible healthcare experience."
+  ],
+  "benefits": [
+    "Comprehensive health check-ups.",
+    "Priority service.",
+    "Discounted rates for medical treatments and consultations.",
+    "Personalized healthcare services for eligible family members."
+  ],
+  "howTo": "For more information or to obtain a membership card, contact Hodan Hospital. Helpline: 1234."
+};
+
+var VIDEOS = [
+  "TtrfvGmMi5U",
+  "Dtt37_7VmHI",
+  "kATYYozWgGc"
 ];
 
 var ABOUT_TEXT = [
@@ -1113,5 +1972,10 @@ var T_SO = {
   pkgNote: 'Waxyaabaha ku jira baaritaannadu waa sida ay ugu qoran yihiin buug-yaraha isbitaalka. Fadlan wac si aad u xaqiijiso baaritaannada iyo qiimaha ka hor ballanta.',
   expWord: 'khibrad', department: 'Qaybta', qualifications: 'Shahaadooyinka', otherSpecialists: 'Takhaasusleyaal kale (Gurmad, ICU, Kaadi-mareen)',
   pServicesSub: 'Kiliinikyo, daryeel bukaan-jiif, qaybaha isbitaalka iyo baaritaanno caafimaad.',
+  navNews: 'Warar', navMembership: 'Kaarka Xubinnimada', allNews: 'Dhammaan wararka', readSource: 'Akhri isha →', newsSub: 'Booqashooyin, heshiisyo, tababarro iyo munaasabado ka dhacay Isbitaalka Hodan.',
+  memberSub: 'Helitaanka daryeel caafimaad ee xubnaha, xaasaskooda iyo carruurtooda.', memberBenefits: 'Faa’iidooyinka xubinnimada', memberHow: 'Sida kaarka loo helo',
+  memberHowTxt: 'La xiriir Isbitaalka Hodan si aad u hesho macluumaad dheeraad ah ama kaarka xubinnimada.',
+  videosEyebrow: 'Muuqaallo', videosTitle: 'Isbitaalka Hodan oo muuqaal ah', youtubeChannel: 'Kanaalka YouTube', playVideo: 'Daar muuqaalka Isbitaalka Hodan', videoAlt: 'Muuqaalka Isbitaalka Hodan',
+  morePages: 'Wax badan oo ku saabsan Isbitaalka Hodan', plannedHead: 'Qorshaysan (weli lama heli karo)', plannedNote: 'Adeegyadan waa la qorsheeyay, weli lama heli karo.',
   confirmNote: 'Adeegyada iyo helitaanka dhakhaatiirta way is beddeli karaan. Fadlan wac isbitaalka si aad u xaqiijiso ka hor booqashadaada.'
 };
