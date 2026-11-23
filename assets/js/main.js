@@ -357,6 +357,19 @@
     });
   }
 
+  /* hero background video: show it only once it is really playing, otherwise keep the gradients */
+  var heroVideo = $('heroVideo');
+  if (heroVideo) {
+    var heroEl = heroVideo.closest('.hero');
+    var showVideo = function () { heroEl.classList.add('has-video'); };
+    var hideVideo = function () { heroEl.classList.remove('has-video'); };
+    heroVideo.muted = true; // required for autoplay on mobile browsers
+    heroVideo.addEventListener('playing', showVideo);
+    heroVideo.addEventListener('error', hideVideo, true); // capture: errors fire on <source>
+    var p = heroVideo.play && heroVideo.play();
+    if (p && p.catch) p.catch(hideVideo); // autoplay blocked (e.g. low-power mode): keep the gradient
+  }
+
   /* hero slider */
   var slides = document.querySelectorAll('.slide');
   if (slides.length) {
