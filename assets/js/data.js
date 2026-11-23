@@ -1977,5 +1977,9 @@ var T_SO = {
   memberHowTxt: 'La xiriir Isbitaalka Hodan si aad u hesho macluumaad dheeraad ah ama kaarka xubinnimada.',
   videosEyebrow: 'Muuqaallo', videosTitle: 'Isbitaalka Hodan oo muuqaal ah', youtubeChannel: 'Kanaalka YouTube', playVideo: 'Daar muuqaalka Isbitaalka Hodan', videoAlt: 'Muuqaalka Isbitaalka Hodan',
   morePages: 'Wax badan oo ku saabsan Isbitaalka Hodan', plannedHead: 'Qorshaysan (weli lama heli karo)', plannedNote: 'Adeegyadan waa la qorsheeyay, weli lama heli karo.',
+  qaLabel: 'Gelitaan degdeg ah', qaBook: 'Qabso Ballan', qaBookShort: 'Ballan', qaAbout: 'Ku saabsan Isbitaalka', qaAboutShort: 'Isbitaalka',
+  qaCheck: 'Baaritaanka Caafimaadka', qaCheckShort: 'Baaritaan', qaDoctor: 'Raadi Dhakhtar', qaDoctorShort: 'Dhakhaatiir', qaSearch: 'Raadi', qaSearchShort: 'Raadi',
+  searchTitle: 'Ka raadi Isbitaalka Hodan', searchPh: 'Raadi dhakhaatiir, takhasusyo, adeegyo…', close: 'Xir',
+  searchHint: 'Qor ugu yaraan 2 xaraf, tusaale magaca dhakhtar, "cardiology" ama "X-ray".', searchNone: 'Natiijo lama helin. Isku day eray kale, ama wac +252 61 1678555.', searchPages: 'Bogag & baaritaanno',
   confirmNote: 'Adeegyada iyo helitaanka dhakhaatiirta way is beddeli karaan. Fadlan wac isbitaalka si aad u xaqiijiso ka hor booqashadaada.'
 };
