@@ -562,6 +562,23 @@
     if (p && p.catch) p.catch(hideVideo); // autoplay blocked (e.g. low-power mode): keep the gradient
   }
 
+  /* overview box video: load when the box comes into view, play the whole video on a loop */
+  document.querySelectorAll('.about-video').forEach(function (v) {
+    var box = v.closest('.about-visual');
+    v.muted = true; // required for autoplay on mobile
+    v.addEventListener('playing', function () { box.classList.add('video-playing'); });
+    v.addEventListener('error', function () { box.classList.remove('video-playing'); });
+    var start = function () {
+      if (!v.getAttribute('src')) { v.src = v.getAttribute('data-src'); v.load(); }
+      var p = v.play(); if (p && p.catch) p.catch(function () {}); // autoplay blocked: gradient stays
+    };
+    if ('IntersectionObserver' in window) {
+      new IntersectionObserver(function (entries) {
+        entries.forEach(function (en) { if (en.isIntersecting) start(); else if (v.getAttribute('src')) v.pause(); });
+      }, { rootMargin: '200px 0px' }).observe(box);
+    } else start();
+  });
+
   /* hero slider */
   var slides = document.querySelectorAll('.slide');
   if (slides.length) {
