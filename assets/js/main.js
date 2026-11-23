@@ -246,7 +246,91 @@
     }
     grid.innerHTML = SPECS.filter(function (s) { return !specGroup || s.group === specGroup; }).map(specCard).join('');
   }
-  function renderDocTrack() { var el = $('docTrack'); if (el) el.innerHTML = DOCTORS.map(docCard).join(''); }
+  /* ---------- "Meet Our Specialists" carousel: four cards, one card moves right-to-left every 4 s ---------- */
+  // Interleave doctors by specialty so neighbours differ; every doctor appears once per cycle.
+  function mixedDoctors() {
+    var groups = {}, keys = [];
+    DOCTORS.forEach(function (d) { var k = d.spec || d.role; if (!groups[k]) { groups[k] = []; keys.push(k); } groups[k].push(d); });
+    var out = [];
+    for (var round = 0; out.length < DOCTORS.length; round++) keys.forEach(function (k) { if (groups[k][round]) out.push(groups[k][round]); });
+    return out;
+  }
+  var dc = { order: null, offset: 0, timer: null, paused: false, hover: false, busy: false };
+  function renderDocTrack() {
+    var el = $('docTrack'); if (!el) return;
+    if (!dc.order) dc.order = mixedDoctors();
+    var list = dc.order.slice(dc.offset).concat(dc.order.slice(0, dc.offset));
+    el.innerHTML = list.map(docCard).join('');
+    el.style.transition = 'none'; el.style.transform = 'none';
+    dcVisibility(); dcPauseLabel();
+  }
+  function dcPerView() {
+    var el = $('docTrack'), c = el && el.firstElementChild; if (!c) return 1;
+    return Math.max(1, Math.round(el.parentNode.clientWidth / (c.getBoundingClientRect().width + 1)));
+  }
+  function dcVisibility() { // cards outside the visible window are hidden from keyboard and screen readers
+    var el = $('docTrack'); if (!el) return;
+    var k = dcPerView();
+    [].forEach.call(el.children, function (c, i) {
+      if (i < k) { c.removeAttribute('inert'); c.removeAttribute('aria-hidden'); } else { c.setAttribute('inert', ''); c.setAttribute('aria-hidden', 'true'); }
+    });
+  }
+  function dcStep() { var el = $('docTrack'); return el.firstElementChild.getBoundingClientRect().width + (parseFloat(getComputedStyle(el).columnGap) || 0); }
+  function dcMove(dir) {
+    var el = $('docTrack'); if (!el || el.children.length < 2) return;
+    if (dc.busy && dc.finish) dc.finish(); // complete the running move first
+    var n = dc.order.length, step = dcStep();
+    dc.busy = true;
+    if (dir > 0) { // first card leaves on the left, the next doctor enters from the right
+      el.style.transition = 'transform .6s ease'; el.style.transform = 'translateX(' + (-step) + 'px)';
+      var finished = false, done = function () {
+        if (finished) return; finished = true; dc.finish = null;
+        el.removeEventListener('transitionend', done);
+        el.style.transition = 'none'; el.appendChild(el.firstElementChild); el.style.transform = 'none';
+        dc.offset = (dc.offset + 1) % n; dc.busy = false; dcVisibility();
+      };
+      dc.finish = done; el.addEventListener('transitionend', done); setTimeout(done, 900);
+    } else {
+      el.style.transition = 'none'; el.insertBefore(el.lastElementChild, el.firstElementChild); el.style.transform = 'translateX(' + (-step) + 'px)';
+      void el.offsetWidth; // apply the start position before animating back
+      el.style.transition = 'transform .6s ease'; el.style.transform = 'none';
+      dc.offset = (dc.offset - 1 + n) % n;
+      var settled = false, settle = function () { if (settled) return; settled = true; dc.finish = null; el.style.transition = 'none'; el.style.transform = 'none'; dc.busy = false; dcVisibility(); };
+      dc.finish = settle; setTimeout(settle, 650);
+    }
+  }
+  function dcPauseLabel() {
+    var b = $('docPause'); if (!b) return;
+    b.setAttribute('aria-pressed', String(dc.paused));
+    b.setAttribute('aria-label', dc.paused ? t('dcPlay', 'Play the doctor carousel') : t('dcPause', 'Pause the doctor carousel'));
+    b.classList.toggle('is-paused', dc.paused);
+  }
+  function dcRestart() { // a manual move gives the visitor a full 4 s before the next automatic one
+    clearInterval(dc.timer);
+    dc.timer = setInterval(function () { if (!dc.paused && !dc.hover && !document.hidden) dcMove(1); }, 4000);
+  }
+  function dcInit() {
+    var el = $('docTrack'); if (!el) return;
+    var box = $('docCarousel'), vp = el.parentNode;
+    if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) dc.paused = true;
+    dcPauseLabel();
+    dcRestart();
+    [box, document.querySelector('#doctors .car-btns')].forEach(function (zone) { // hovering the cards or the arrows pauses it
+      if (!zone) return;
+      zone.addEventListener('mouseenter', function () { dc.hover = true; });
+      zone.addEventListener('mouseleave', function () { dc.hover = false; });
+    });
+    box.addEventListener('focusin', function () { dc.hover = true; });
+    box.addEventListener('focusout', function () { dc.hover = false; });
+    var x0 = null, y0 = null; // swipe on touch screens
+    vp.addEventListener('touchstart', function (e) { x0 = e.touches[0].clientX; y0 = e.touches[0].clientY; }, { passive: true });
+    vp.addEventListener('touchend', function (e) {
+      if (x0 === null) return;
+      var dx = e.changedTouches[0].clientX - x0, dy = e.changedTouches[0].clientY - y0; x0 = null;
+      if (Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(dy)) { dcMove(dx < 0 ? 1 : -1); dcRestart(); }
+    }, { passive: true });
+    window.addEventListener('resize', dcVisibility);
+  }
   function renderPkgs() {
     var el = $('pkgGrid'); if (!el) return;
     var n = +el.getAttribute('data-limit') || PACKAGES.length;
@@ -295,44 +379,6 @@
       bn.innerHTML = '<img src="' + esc(MEMBERSHIP.banner.src) + '" alt="' + esc(MEMBERSHIP.banner.alt) + '" loading="lazy" decoding="async" />';
       bn.hidden = false;
     }
-  }
-  /* homepage hero: one doctor at a time (only doctors with an approved photo) */
-  var heroDocIdx = 0, heroDocTimer = null, heroDocPaused = false;
-  function heroDocList() { return DOCTORS.filter(function (d) { return d.photo; }); }
-  function renderHeroDocs() {
-    var el = $('heroDocs'); if (!el) return;
-    var list = heroDocList(); if (!list.length) { el.parentNode.parentNode.hidden = true; return; }
-    heroDocIdx = (heroDocIdx + list.length) % list.length;
-    el.setAttribute('aria-label', t('ourDoctors', 'Our Doctors'));
-    el.innerHTML = '<div class="hd-stage">' + list.map(function (d, i) {
-      var url = 'doctor.html?id=' + d.slug;
-      return '<a class="hd-card' + (i === heroDocIdx ? ' on' : '') + '" href="' + url + '" role="group" aria-roledescription="slide" aria-label="' + (i + 1) + ' / ' + list.length + ': ' + esc(d.name) + '"' + (i === heroDocIdx ? '' : ' aria-hidden="true" tabindex="-1"') + '>' +
-        '<span class="hd-photo"><img src="' + esc(d.photo) + '" alt="' + esc('Portrait of ' + d.name + ', ' + d.role) + '" ' + (i === heroDocIdx ? '' : 'loading="lazy" ') + 'decoding="async" /></span>' +
-        '<span class="hd-body"><b>' + esc(d.name) + '</b><span>' + esc(d.role) + '</span><em>' + t('viewProfile', 'View profile') + ' →</em></span></a>';
-    }).join('') + '</div>' +
-      '<div class="hd-controls"><button type="button" class="hd-btn" data-hd="-1" aria-label="' + esc(t('prevDoctor', 'Previous doctor')) + '">‹</button>' +
-      '<span class="hd-dots">' + list.map(function (d, i) { return '<button type="button" class="hd-dot' + (i === heroDocIdx ? ' on' : '') + '" data-hd-go="' + i + '" aria-label="' + esc(d.name) + '"' + (i === heroDocIdx ? ' aria-current="true"' : '') + '></button>'; }).join('') + '</span>' +
-      '<button type="button" class="hd-btn" data-hd="1" aria-label="' + esc(t('nextDoctor', 'Next doctor')) + '">›</button></div>';
-  }
-  function heroDocGo(i) {
-    var el = $('heroDocs'); if (!el) return;
-    var list = heroDocList(); heroDocIdx = (i + list.length) % list.length;
-    el.querySelectorAll('.hd-card').forEach(function (c, j) {
-      var on = j === heroDocIdx; c.classList.toggle('on', on);
-      if (on) { c.removeAttribute('aria-hidden'); c.removeAttribute('tabindex'); var img = c.querySelector('img'); if (img) img.removeAttribute('loading'); }
-      else { c.setAttribute('aria-hidden', 'true'); c.setAttribute('tabindex', '-1'); }
-    });
-    el.querySelectorAll('.hd-dot').forEach(function (b, j) { b.classList.toggle('on', j === heroDocIdx); if (j === heroDocIdx) b.setAttribute('aria-current', 'true'); else b.removeAttribute('aria-current'); });
-  }
-  function heroDocStart() {
-    var el = $('heroDocs'); if (!el || heroDocTimer) return;
-    var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    if (reduce) return; // no auto-advance; buttons still work
-    heroDocTimer = setInterval(function () { if (!heroDocPaused && !document.hidden) heroDocGo(heroDocIdx + 1); }, 5000);
-    el.addEventListener('mouseenter', function () { heroDocPaused = true; });
-    el.addEventListener('mouseleave', function () { heroDocPaused = false; });
-    el.addEventListener('focusin', function () { heroDocPaused = true; });
-    el.addEventListener('focusout', function () { heroDocPaused = false; });
   }
   function renderVideos() { var el = $('videoGrid'); if (el) el.innerHTML = VIDEOS.map(videoCard).join(''); }
   function renderMgmt() {
@@ -482,7 +528,7 @@
     $('burger').addEventListener('click', function () { toggleDrawer(true); });
     renderSpecGrid(); renderDocTrack(); renderPkgs(); renderFac(); renderNews(); renderMgmt();
     renderAboutText(); renderCallCenter(); renderStats();
-    renderNewsPage(); renderInfoPage(); renderMembership(); renderVideos(); renderMemberSection(); renderHeroDocs();
+    renderNewsPage(); renderInfoPage(); renderMembership(); renderVideos(); renderMemberSection();
     renderFinder(); renderDoctorList(); renderSpeciality(); renderDoctor(); renderForm();
   }
 
@@ -504,19 +550,14 @@
       if (tab === 'check') location.href = 'health-checkups.html';
       return;
     }
-    if ((el = e.target.closest('[data-hd]'))) { heroDocGo(heroDocIdx + (+el.getAttribute('data-hd'))); return; }
-    if ((el = e.target.closest('[data-hd-go]'))) { heroDocGo(+el.getAttribute('data-hd-go')); return; }
     if ((el = e.target.closest('[data-video]'))) {
       var vid = el.getAttribute('data-video');
       el.outerHTML = '<div class="video-card playing"><iframe src="https://www.youtube-nocookie.com/embed/' + encodeURIComponent(vid) + '?autoplay=1&rel=0" title="' + esc(t('videoAlt', 'Hodan Hospital video')) +
         '" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen loading="lazy"></iframe></div>';
       return;
     }
-    if ((el = e.target.closest('[data-car]'))) {
-      var tr = $(el.getAttribute('data-car'));
-      tr.scrollBy({ left: (el.getAttribute('data-dir') === 'next' ? 1 : -1) * tr.clientWidth * 0.8, behavior: 'smooth' });
-      return;
-    }
+    if ((el = e.target.closest('[data-car="docTrack"]'))) { dcMove(el.getAttribute('data-dir') === 'next' ? 1 : -1); dcRestart(); return; }
+    if ((el = e.target.closest('#docPause'))) { dc.paused = !dc.paused; dcPauseLabel(); return; }
     if ((el = e.target.closest('[data-open-search]'))) { openSearch(el); return; }
     if (e.target.closest('[data-close-search]') || e.target.id === 'searchDlg') { closeSearch(); return; }
     if (e.target.closest('[data-close]')) toggleDrawer(false);
@@ -602,20 +643,8 @@
     if (p && p.catch) p.catch(hideVideo); // autoplay blocked (e.g. low-power mode): keep the gradient
   }
 
-  heroDocStart();
 
-  /* mobile: size the hero slide area to the tallest slide so the doctor carousel sits right under the buttons */
-  function fitHeroSlides() {
-    var wrap = document.querySelector('.slides'); if (!wrap) return;
-    if (window.innerWidth > 860) { wrap.style.minHeight = ''; return; }
-    var h = 0;
-    wrap.querySelectorAll('.slide > .container').forEach(function (c) { h = Math.max(h, c.offsetHeight); });
-    if (h) wrap.style.minHeight = (h + 56) + 'px';
-  }
-  fitHeroSlides();
-  window.addEventListener('resize', fitHeroSlides);
-  window.addEventListener('load', fitHeroSlides);
-  document.addEventListener('click', function (e) { if (e.target.closest('[data-lang]')) setTimeout(fitHeroSlides, 0); });
+  dcInit();
 
   /* overview box video: load when the box comes into view, play the whole video on a loop */
   document.querySelectorAll('.about-video').forEach(function (v) {
