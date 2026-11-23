@@ -555,37 +555,77 @@
   .about-visual .about-badge { z-index: 1; }
   .about-badge b { white-space: nowrap; }
 
-  /* ================= Hero doctor carousel ================= */
-  .hero-docs-wrap { position: absolute; inset: 0; z-index: 2; pointer-events: none; display: flex; align-items: center; }
-  .hero-docs-wrap .container { display: grid; grid-template-columns: 1.15fr .85fr; gap: 40px; padding-bottom: 40px; }
-  .hero-docs { grid-column: 2; justify-self: center; width: min(320px, 100%); pointer-events: auto; }
-  .hd-stage { position: relative; aspect-ratio: 320 / 440; }
-  .hd-card { position: absolute; inset: 0; display: flex; flex-direction: column; background: #fff; color: var(--ink); border-radius: 20px; overflow: hidden; box-shadow: 0 22px 50px rgba(0,0,0,.35); opacity: 0; visibility: hidden; transform: translateY(8px); transition: opacity .5s ease, transform .5s ease, visibility .5s; }
-  .hd-card.on { opacity: 1; visibility: visible; transform: none; }
-  .hd-card:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; }
-  .hd-photo { flex: 1; min-height: 0; background: #e9ecef; display: block; }
-  .hd-photo img { width: 100%; height: 100%; object-fit: cover; object-position: center 8%; display: block; }
-  .hd-body { padding: 14px 18px 16px; display: grid; gap: 2px; }
-  .hd-body b { font-size: 17px; color: var(--primary-dark); line-height: 1.25; }
-  .hd-body span { font-size: 13.5px; font-weight: 600; color: #c47a08; }
-  .hd-body em { font-style: normal; font-size: 13px; font-weight: 600; color: var(--primary); margin-top: 6px; }
-  .hd-card:hover .hd-body em { color: var(--accent); }
-  .hd-controls { display: flex; align-items: center; justify-content: center; gap: 10px; margin-top: 14px; }
-  .hd-btn { width: 36px; height: 36px; border-radius: 50%; border: 1px solid rgba(255,255,255,.5); background: rgba(255,255,255,.12); color: #fff; font-size: 20px; line-height: 1; cursor: pointer; }
-  .hd-btn:hover, .hd-btn:focus-visible { background: var(--accent); border-color: var(--accent); color: #262c31; }
-  .hd-dots { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; max-width: 220px; }
-  .hd-dot { width: 8px; height: 8px; padding: 0; border: 0; border-radius: 8px; background: rgba(255,255,255,.45); cursor: pointer; transition: width .3s, background .3s; }
-  .hd-dot.on { width: 20px; background: var(--accent); }
-  @media (max-width: 860px) {
-    .hero-docs-wrap { position: relative; inset: auto; z-index: 2; display: block; padding: 0 0 96px; }
-    .hero-docs-wrap .container { display: block; padding-bottom: 0; }
-    .hero-docs { margin: 0 auto; width: min(290px, 100%); }
-    .hero-dots { display: none; }
-  }
-  @media (prefers-reduced-motion: reduce) { .hd-card { transition: none; } }
   @media (min-width: 861px) and (max-width: 1380px) {
     /* the quick-access rail sits mid-screen, so the header and top bar keep their normal gutters */
     header.main .container, .topbar .container { padding-left: 20px; padding-right: 20px; }
   }
-  .hd-dots { max-width: 300px; }
-  @media (max-width: 560px) { .hd-dots { gap: 4px; } .hd-dot { width: 6px; height: 6px; } .hd-dot.on { width: 16px; } }
+
+  /* ================= Meet Our Specialists carousel ================= */
+  .dc-viewport { overflow: hidden; padding: 4px 2px 10px; margin: -4px -2px -10px; touch-action: pan-y; }
+  .dc-track { display: flex; gap: 22px; will-change: transform; }
+  .dc-track > .doc { flex: 0 0 calc((100% - 66px) / 4); min-width: 0; }
+  .dc-pause { position: relative; }
+  .dc-pause-ic { display: inline-block; width: 12px; height: 14px; border-left: 4px solid currentColor; border-right: 4px solid currentColor; vertical-align: middle; }
+  .dc-pause.is-paused .dc-pause-ic { width: 0; height: 0; border-left: 12px solid currentColor; border-right: 0; border-top: 7px solid transparent; border-bottom: 7px solid transparent; margin-left: 3px; }
+  @media (max-width: 1200px) { .dc-track > .doc { flex-basis: calc((100% - 44px) / 3); } }
+  @media (max-width: 860px) { .dc-track > .doc { flex-basis: calc((100% - 22px) / 2); } }
+  @media (max-width: 560px) { .dc-track > .doc { flex-basis: 100%; } }
+
+  /* ================= Doctor profile ================= */
+  .dp-hero { background: radial-gradient(circle at 88% 10%, rgba(243,160,29,.35), transparent 45%), linear-gradient(120deg, #262c31, #3a4349 70%); color: #fff; padding: 34px 0 44px; border-bottom: 4px solid var(--accent); }
+  .dp-hero .crumbs { margin-bottom: 22px; }
+  .dp-top { display: grid; grid-template-columns: 240px 1fr 340px; gap: 34px; align-items: start; }
+  .dp-photo { width: 240px; aspect-ratio: 4 / 5; border-radius: 18px; overflow: hidden; background: #eef0f2; box-shadow: 0 18px 40px rgba(0,0,0,.35); border: 3px solid rgba(255,255,255,.9); display: grid; place-items: center; }
+  .dp-photo img { width: 100%; height: 100%; object-fit: cover; object-position: center 8%; display: block; }
+  .dp-photo .avatar { width: 120px; height: 120px; border-radius: 50%; background: #fff; display: grid; place-items: center; font-size: 40px; font-weight: 700; box-shadow: 0 10px 24px rgba(0,0,0,.15); }
+  .dp-eyebrow { color: var(--accent); font-size: 12px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; }
+  .dp-summary h1 { font-size: clamp(26px, 3.2vw, 38px); line-height: 1.15; margin: 8px 0 6px; }
+  .dp-role { color: var(--accent); font-weight: 600; font-size: 17px; }
+  .dp-facts { display: grid; gap: 10px; margin-top: 20px; }
+  .dp-facts div { display: grid; grid-template-columns: 150px 1fr; gap: 12px; padding: 10px 14px; background: rgba(255,255,255,.07); border: 1px solid rgba(255,255,255,.12); border-radius: 10px; }
+  .dp-facts dt { color: rgba(255,255,255,.7); font-size: 13.5px; }
+  .dp-facts dd { font-weight: 600; }
+  .dp-facts a { color: #fff; text-decoration: underline; text-decoration-color: var(--accent); text-underline-offset: 3px; }
+  .dp-book { background: #fff; color: var(--ink); border-radius: 18px; padding: 22px; box-shadow: 0 20px 44px rgba(0,0,0,.3); border-top: 5px solid var(--accent); }
+  .dp-book h2 { font-size: 19px; color: var(--primary-dark); }
+  .dp-book-with { color: var(--muted); font-size: 14px; margin: 2px 0 14px; }
+  .dp-btn { width: 100%; margin-bottom: 10px; }
+  .dp-call { background: var(--primary-dark); color: #fff; }
+  .dp-call:hover { background: #111; }
+  .dp-alt { display: grid; gap: 8px; margin-top: 6px; }
+  .dp-alt-link { display: block; padding: 11px 13px; border: 1px solid var(--line); border-radius: 12px; }
+  .dp-alt-link:hover, .dp-alt-link:focus-visible { border-color: var(--accent); background: #fff8ee; }
+  .dp-alt-link b { display: block; color: var(--primary-dark); font-size: 14.5px; }
+  .dp-alt-link span { display: block; color: var(--muted); font-size: 12.5px; line-height: 1.45; margin-top: 2px; }
+  .dp-book-note { font-size: 12.5px; color: var(--muted); margin-top: 12px; }
+  .dp-main { padding-top: 50px; }
+  .dp-sections { max-width: 820px; display: grid; gap: 22px; }
+  .dp-sec { background: #fff; border: 1px solid var(--line); border-left: 4px solid var(--accent); border-radius: 14px; padding: 22px 24px; }
+  .dp-sec h2 { font-size: 21px; color: var(--primary-dark); margin-bottom: 10px; }
+  .dp-sec p { color: var(--muted); }
+  .dp-sec p b { color: var(--ink); }
+  @media (max-width: 1100px) {
+    .dp-top { grid-template-columns: 200px 1fr; }
+    .dp-photo { width: 200px; }
+    .dp-book { grid-column: 1 / -1; max-width: 560px; }
+  }
+  @media (max-width: 640px) {
+    .dp-top { grid-template-columns: 1fr; gap: 22px; }
+    .dp-photo { width: min(240px, 70vw); justify-self: center; }
+    .dp-summary { text-align: left; }
+    .dp-facts div { grid-template-columns: 1fr; gap: 2px; }
+    .dp-book { max-width: none; }
+  }
+
+  /* ================= Homepage section colours (About -> Health Check-ups) =================
+     Each section starts with a short 64px blend from the colour above it. */
+  body[data-page="home"] #about { background: linear-gradient(180deg, #ffffff 0, #FFF8EE 64px, #FFF8EE 100%); }
+  body[data-page="home"] #about .stat { background: #fff; box-shadow: 0 4px 14px rgba(196,122,8,.06); }
+  body[data-page="home"] #specialities { background: linear-gradient(180deg, #FFF8EE 0, #F2F6FA 64px, #F2F6FA 100%); }
+  body[data-page="home"] #specialities .chip-tabs button:not(.active) { background: #fff; }
+  body[data-page="home"] #doctors { background: linear-gradient(180deg, #F2F6FA 0, #F5F3F0 64px, #F5F3F0 100%); }
+  body[data-page="home"] #doctors .doc { background: #fff; }
+  body[data-page="home"] #doctors .car-btns button { background: #fff; }
+  body[data-page="home"] #checkups { background: linear-gradient(180deg, #F5F3F0 0, #FFF7EA 64px, #FDEBDC 100%); }
+  body[data-page="home"] .after-checkups { background: linear-gradient(180deg, #FDEBDC 0, #ffffff 64px); }
+  body[data-page="home"] :is(#about, #specialities, #doctors, #checkups) .eyebrow { color: #9A5800; } /* darker orange: readable on the light section colours */

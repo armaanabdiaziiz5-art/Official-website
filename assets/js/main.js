@@ -246,7 +246,91 @@
     }
     grid.innerHTML = SPECS.filter(function (s) { return !specGroup || s.group === specGroup; }).map(specCard).join('');
   }
-  function renderDocTrack() { var el = $('docTrack'); if (el) el.innerHTML = DOCTORS.map(docCard).join(''); }
+  /* ---------- "Meet Our Specialists" carousel: four cards, one card moves right-to-left every 4 s ---------- */
+  // Interleave doctors by specialty so neighbours differ; every doctor appears once per cycle.
+  function mixedDoctors() {
+    var groups = {}, keys = [];
+    DOCTORS.forEach(function (d) { var k = d.spec || d.role; if (!groups[k]) { groups[k] = []; keys.push(k); } groups[k].push(d); });
+    var out = [];
+    for (var round = 0; out.length < DOCTORS.length; round++) keys.forEach(function (k) { if (groups[k][round]) out.push(groups[k][round]); });
+    return out;
+  }
+  var dc = { order: null, offset: 0, timer: null, paused: false, hover: false, busy: false };
+  function renderDocTrack() {
+    var el = $('docTrack'); if (!el) return;
+    if (!dc.order) dc.order = mixedDoctors();
+    var list = dc.order.slice(dc.offset).concat(dc.order.slice(0, dc.offset));
+    el.innerHTML = list.map(docCard).join('');
+    el.style.transition = 'none'; el.style.transform = 'none';
+    dcVisibility(); dcPauseLabel();
+  }
+  function dcPerView() {
+    var el = $('docTrack'), c = el && el.firstElementChild; if (!c) return 1;
+    return Math.max(1, Math.round(el.parentNode.clientWidth / (c.getBoundingClientRect().width + 1)));
+  }
+  function dcVisibility() { // cards outside the visible window are hidden from keyboard and screen readers
+    var el = $('docTrack'); if (!el) return;
+    var k = dcPerView();
+    [].forEach.call(el.children, function (c, i) {
+      if (i < k) { c.removeAttribute('inert'); c.removeAttribute('aria-hidden'); } else { c.setAttribute('inert', ''); c.setAttribute('aria-hidden', 'true'); }
+    });
+  }
+  function dcStep() { var el = $('docTrack'); return el.firstElementChild.getBoundingClientRect().width + (parseFloat(getComputedStyle(el).columnGap) || 0); }
+  function dcMove(dir) {
+    var el = $('docTrack'); if (!el || el.children.length < 2) return;
+    if (dc.busy && dc.finish) dc.finish(); // complete the running move first
+    var n = dc.order.length, step = dcStep();
+    dc.busy = true;
+    if (dir > 0) { // first card leaves on the left, the next doctor enters from the right
+      el.style.transition = 'transform .6s ease'; el.style.transform = 'translateX(' + (-step) + 'px)';
+      var finished = false, done = function () {
+        if (finished) return; finished = true; dc.finish = null;
+        el.removeEventListener('transitionend', done);
+        el.style.transition = 'none'; el.appendChild(el.firstElementChild); el.style.transform = 'none';
+        dc.offset = (dc.offset + 1) % n; dc.busy = false; dcVisibility();
+      };
+      dc.finish = done; el.addEventListener('transitionend', done); setTimeout(done, 900);
+    } else {
+      el.style.transition = 'none'; el.insertBefore(el.lastElementChild, el.firstElementChild); el.style.transform = 'translateX(' + (-step) + 'px)';
+      void el.offsetWidth; // apply the start position before animating back
+      el.style.transition = 'transform .6s ease'; el.style.transform = 'none';
+      dc.offset = (dc.offset - 1 + n) % n;
+      var settled = false, settle = function () { if (settled) return; settled = true; dc.finish = null; el.style.transition = 'none'; el.style.transform = 'none'; dc.busy = false; dcVisibility(); };
+      dc.finish = settle; setTimeout(settle, 650);
+    }
+  }
+  function dcPauseLabel() {
+    var b = $('docPause'); if (!b) return;
+    b.setAttribute('aria-pressed', String(dc.paused));
+    b.setAttribute('aria-label', dc.paused ? t('dcPlay', 'Play the doctor carousel') : t('dcPause', 'Pause the doctor carousel'));
+    b.classList.toggle('is-paused', dc.paused);
+  }
+  function dcRestart() { // a manual move gives the visitor a full 4 s before the next automatic one
+    clearInterval(dc.timer);
+    dc.timer = setInterval(function () { if (!dc.paused && !dc.hover && !document.hidden) dcMove(1); }, 4000);
+  }
+  function dcInit() {
+    var el = $('docTrack'); if (!el) return;
+    var box = $('docCarousel'), vp = el.parentNode;
+    if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) dc.paused = true;
+    dcPauseLabel();
+    dcRestart();
+    [box, document.querySelector('#doctors .car-btns')].forEach(function (zone) { // hovering the cards or the arrows pauses it
+      if (!zone) return;
+      zone.addEventListener('mouseenter', function () { dc.hover = true; });
+      zone.addEventListener('mouseleave', function () { dc.hover = false; });
+    });
+    box.addEventListener('focusin', function () { dc.hover = true; });
+    box.addEventListener('focusout', function () { dc.hover = false; });
+    var x0 = null, y0 = null; // swipe on touch screens
+    vp.addEventListener('touchstart', function (e) { x0 = e.touches[0].clientX; y0 = e.touches[0].clientY; }, { passive: true });
+    vp.addEventListener('touchend', function (e) {
+      if (x0 === null) return;
+      var dx = e.changedTouches[0].clientX - x0, dy = e.changedTouches[0].clientY - y0; x0 = null;
+      if (Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(dy)) { dcMove(dx < 0 ? 1 : -1); dcRestart(); }
+    }, { passive: true });
+    window.addEventListener('resize', dcVisibility);
+  }
   function renderPkgs() {
     var el = $('pkgGrid'); if (!el) return;
     var n = +el.getAttribute('data-limit') || PACKAGES.length;
@@ -295,44 +379,6 @@
       bn.innerHTML = '<img src="' + esc(MEMBERSHIP.banner.src) + '" alt="' + esc(MEMBERSHIP.banner.alt) + '" loading="lazy" decoding="async" />';
       bn.hidden = false;
     }
-  }
-  /* homepage hero: one doctor at a time (only doctors with an approved photo) */
-  var heroDocIdx = 0, heroDocTimer = null, heroDocPaused = false;
-  function heroDocList() { return DOCTORS.filter(function (d) { return d.photo; }); }
-  function renderHeroDocs() {
-    var el = $('heroDocs'); if (!el) return;
-    var list = heroDocList(); if (!list.length) { el.parentNode.parentNode.hidden = true; return; }
-    heroDocIdx = (heroDocIdx + list.length) % list.length;
-    el.setAttribute('aria-label', t('ourDoctors', 'Our Doctors'));
-    el.innerHTML = '<div class="hd-stage">' + list.map(function (d, i) {
-      var url = 'doctor.html?id=' + d.slug;
-      return '<a class="hd-card' + (i === heroDocIdx ? ' on' : '') + '" href="' + url + '" role="group" aria-roledescription="slide" aria-label="' + (i + 1) + ' / ' + list.length + ': ' + esc(d.name) + '"' + (i === heroDocIdx ? '' : ' aria-hidden="true" tabindex="-1"') + '>' +
-        '<span class="hd-photo"><img src="' + esc(d.photo) + '" alt="' + esc('Portrait of ' + d.name + ', ' + d.role) + '" ' + (i === heroDocIdx ? '' : 'loading="lazy" ') + 'decoding="async" /></span>' +
-        '<span class="hd-body"><b>' + esc(d.name) + '</b><span>' + esc(d.role) + '</span><em>' + t('viewProfile', 'View profile') + ' →</em></span></a>';
-    }).join('') + '</div>' +
-      '<div class="hd-controls"><button type="button" class="hd-btn" data-hd="-1" aria-label="' + esc(t('prevDoctor', 'Previous doctor')) + '">‹</button>' +
-      '<span class="hd-dots">' + list.map(function (d, i) { return '<button type="button" class="hd-dot' + (i === heroDocIdx ? ' on' : '') + '" data-hd-go="' + i + '" aria-label="' + esc(d.name) + '"' + (i === heroDocIdx ? ' aria-current="true"' : '') + '></button>'; }).join('') + '</span>' +
-      '<button type="button" class="hd-btn" data-hd="1" aria-label="' + esc(t('nextDoctor', 'Next doctor')) + '">›</button></div>';
-  }
-  function heroDocGo(i) {
-    var el = $('heroDocs'); if (!el) return;
-    var list = heroDocList(); heroDocIdx = (i + list.length) % list.length;
-    el.querySelectorAll('.hd-card').forEach(function (c, j) {
-      var on = j === heroDocIdx; c.classList.toggle('on', on);
-      if (on) { c.removeAttribute('aria-hidden'); c.removeAttribute('tabindex'); var img = c.querySelector('img'); if (img) img.removeAttribute('loading'); }
-      else { c.setAttribute('aria-hidden', 'true'); c.setAttribute('tabindex', '-1'); }
-    });
-    el.querySelectorAll('.hd-dot').forEach(function (b, j) { b.classList.toggle('on', j === heroDocIdx); if (j === heroDocIdx) b.setAttribute('aria-current', 'true'); else b.removeAttribute('aria-current'); });
-  }
-  function heroDocStart() {
-    var el = $('heroDocs'); if (!el || heroDocTimer) return;
-    var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    if (reduce) return; // no auto-advance; buttons still work
-    heroDocTimer = setInterval(function () { if (!heroDocPaused && !document.hidden) heroDocGo(heroDocIdx + 1); }, 5000);
-    el.addEventListener('mouseenter', function () { heroDocPaused = true; });
-    el.addEventListener('mouseleave', function () { heroDocPaused = false; });
-    el.addEventListener('focusin', function () { heroDocPaused = true; });
-    el.addEventListener('focusout', function () { heroDocPaused = false; });
   }
   function renderVideos() { var el = $('videoGrid'); if (el) el.innerHTML = VIDEOS.map(videoCard).join(''); }
   function renderMgmt() {
@@ -431,21 +477,49 @@
     var root = $('docProfile'); if (!root) return;
     var d = docById(params.get('id')) || DOCTORS[0], s = specById(d.spec), i = tintIdx(s);
     document.title = d.name + ' | ' + d.role + ' | Hodan Hospital';
-    $('pageTitle').textContent = d.name;
-    $('pageSub').textContent = d.role + ', Hodan Hospital Mogadishu';
     $('crumbName').textContent = d.name;
+    var list = function (v) { return Array.isArray(v) ? v.filter(Boolean) : v ? [v] : []; };
+    // facts shown at the top only when confirmed in the data
+    var facts = [
+      [t('qualifications', 'Qualifications'), d.qual],
+      [t('experience', 'Experience'), d.exp ? d.exp + ' ' + t('expWord', 'experience') : ''],
+      [t('department', 'Department'), s ? '<a href="speciality.html?id=' + s.id + '">' + esc(specName(s)) + '</a>' : '', true],
+      [t('languages', 'Languages'), list(d.languages).join(', ')],
+      [t('workingHours', 'Working hours'), list(d.hours).join('; ')],
+      [t('registration', 'Registration number'), d.registration],
+    ].filter(function (f) { return f[1]; });
+    var waText = 'Hello Hodan Hospital, I would like to request an appointment with ' + d.name + ' (' + d.role + ').';
+    var mail = 'mailto:' + HH.email + '?subject=' + encodeURIComponent('Appointment request: ' + d.name) + '&body=' + encodeURIComponent(waText + '\n\nName:\nPhone:\nPreferred date:\n');
     root.innerHTML =
-      '<div class="profile-card"><div class="doc-photo" style="background:linear-gradient(150deg,' + TINT[i] + ',#fff)">' + portrait(d, INK[i]) + '</div>' +
-        '<div class="in"><a class="btn btn-red" href="' + bookUrl(d) + '">' + t('bookAppt', 'Book Appointment') + '</a>' +
-        '<a class="btn btn-ghost" href="tel:' + HH.tel + '">' + icon('i-phone', null, 18) + ' ' + HH.phone + '</a></div></div>' +
-      '<div><h2 style="font-size:26px;color:var(--primary-dark)">' + esc(d.name) + '</h2><p style="color:var(--accent);font-weight:600">' + esc(d.role) + '</p>' +
-        '<dl class="kv">' +
-        (s ? '<dt>' + t('department', 'Department') + '</dt><dd><a href="speciality.html?id=' + s.id + '">' + esc(specName(s)) + '</a></dd>' : '') +
-        (d.qual ? '<dt>' + t('qualifications', 'Qualifications') + '</dt><dd>' + esc(d.qual) + '</dd>' : '') +
-        (d.exp ? '<dt>' + t('experience', 'Experience') + '</dt><dd>' + esc(d.exp) + '</dd>' : '') +
-        '<dt>' + t('hospital', 'Hospital') + '</dt><dd>Hodan Hospital</dd><dt>' + t('location', 'Location') + '</dt><dd>' + esc(L(HH.address)) + '</dd></dl>' +
-        (d.bio ? '<h3 style="color:var(--primary-dark);margin-bottom:8px">' + t('aboutDoc', 'About') + '</h3><p style="color:var(--muted)">' + esc(d.bio) + '</p>' : '') +
-        '<p class="note">' + t('disclaimer', 'Doctor schedules may change. Please call to confirm availability.') + '</p></div>';
+      '<div class="dp-photo">' + portrait(d, INK[i]) + '</div>' +
+      '<div class="dp-summary"><span class="dp-eyebrow">' + t('navDoctors', 'Doctors') + ' · Hodan Hospital</span>' +
+        '<h1 id="pageTitle">' + esc(d.name) + '</h1><p class="dp-role">' + esc(d.role) + '</p>' +
+        (facts.length ? '<dl class="dp-facts">' + facts.map(function (f) { return '<div><dt>' + esc(f[0]) + '</dt><dd>' + (f[2] ? f[1] : esc(f[1])) + '</dd></div>'; }).join('') + '</dl>' : '') +
+      '</div>' +
+      '<aside class="dp-book" aria-labelledby="dpBookTitle"><h2 id="dpBookTitle">' + t('bookWithTitle', 'Book an appointment') + '</h2>' +
+        '<p class="dp-book-with">' + esc(d.name) + '</p>' +
+        '<a class="btn btn-red dp-btn" href="' + bookUrl(d) + '">' + icon('i-cal', null, 18) + ' ' + t('bookAppt', 'Book Appointment') + '</a>' +
+        '<a class="btn dp-btn dp-call" href="tel:' + HH.tel + '">' + icon('i-phone', null, 18) + ' ' + t('callNow', 'Call Now') + ' · ' + HH.phone + '</a>' +
+        '<div class="dp-alt"><a class="dp-alt-link" href="https://wa.me/' + HH.wa + '?text=' + encodeURIComponent(waText) + '" target="_blank" rel="noopener">' +
+          '<b>' + t('reqWhatsApp', 'Request on WhatsApp') + '</b><span>' + t('reqWhatsAppNote', 'Opens WhatsApp with your message ready. Press Send in WhatsApp to deliver it.') + '</span></a>' +
+        '<a class="dp-alt-link" href="' + mail + '"><b>' + t('reqEmail', 'Request by email') + '</b><span>' + t('reqEmailNote', 'Opens your email app with the request ready. Press Send in your email app to deliver it.') + '</span></a></div>' +
+        '<p class="dp-book-note">' + t('disclaimer', 'Doctor schedules may change. Please call to confirm availability.') + '</p>' +
+      '</aside>';
+    // detail sections: only those with confirmed content
+    var para = function (v) { return list(v).map(function (x) { return '<p>' + esc(x) + '</p>'; }).join(''); };
+    var bullets = function (v) { var a = list(v); return a.length ? '<ul class="ticks" style="grid-template-columns:1fr">' + a.map(function (x) { return '<li>' + esc(x) + '</li>'; }).join('') + '</ul>' : ''; };
+    var sections = [
+      ['about', t('aboutTheDoctor', 'About the Doctor'), para(d.bio)],
+      ['experience', t('experience', 'Experience'), bullets(d.experience)],
+      ['memberships', t('memberships', 'Memberships'), bullets(d.memberships)],
+      ['awards', t('awards', 'Awards & Achievements'), bullets(d.awards)],
+      ['research', t('research', 'Research & Publications'), bullets(d.research)],
+      ['expertise', t('expertise', 'Clinical Expertise'), bullets(d.expertise)],
+      ['treatments', t('treatmentsProcedures', 'Treatments & Procedures'), bullets(d.treatments)],
+      ['location', t('location', 'Location'), '<p><b>Hodan Hospital</b><br>' + esc(L(HH.address)) + '</p>' +
+        (HH.mapPin ? '<div class="map"><iframe title="Hodan Hospital location map" loading="lazy" referrerpolicy="no-referrer-when-downgrade" src="' + esc(HH.mapPin) + '"></iframe></div>' : '')],
+    ].filter(function (x) { return x[2]; });
+    $('docSections').innerHTML = sections.map(function (x) { return '<section class="dp-sec" id="dp-' + x[0] + '"><h2>' + esc(x[1]) + '</h2>' + x[2] + '</section>'; }).join('');
     var others = DOCTORS.filter(function (x) { return d.spec ? x.spec === d.spec && x !== d : false; });
     $('relatedWrap').style.display = others.length ? '' : 'none';
     $('related').innerHTML = others.map(docCard).join('');
@@ -482,7 +556,7 @@
     $('burger').addEventListener('click', function () { toggleDrawer(true); });
     renderSpecGrid(); renderDocTrack(); renderPkgs(); renderFac(); renderNews(); renderMgmt();
     renderAboutText(); renderCallCenter(); renderStats();
-    renderNewsPage(); renderInfoPage(); renderMembership(); renderVideos(); renderMemberSection(); renderHeroDocs();
+    renderNewsPage(); renderInfoPage(); renderMembership(); renderVideos(); renderMemberSection();
     renderFinder(); renderDoctorList(); renderSpeciality(); renderDoctor(); renderForm();
   }
 
@@ -504,19 +578,14 @@
       if (tab === 'check') location.href = 'health-checkups.html';
       return;
     }
-    if ((el = e.target.closest('[data-hd]'))) { heroDocGo(heroDocIdx + (+el.getAttribute('data-hd'))); return; }
-    if ((el = e.target.closest('[data-hd-go]'))) { heroDocGo(+el.getAttribute('data-hd-go')); return; }
     if ((el = e.target.closest('[data-video]'))) {
       var vid = el.getAttribute('data-video');
       el.outerHTML = '<div class="video-card playing"><iframe src="https://www.youtube-nocookie.com/embed/' + encodeURIComponent(vid) + '?autoplay=1&rel=0" title="' + esc(t('videoAlt', 'Hodan Hospital video')) +
         '" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen loading="lazy"></iframe></div>';
       return;
     }
-    if ((el = e.target.closest('[data-car]'))) {
-      var tr = $(el.getAttribute('data-car'));
-      tr.scrollBy({ left: (el.getAttribute('data-dir') === 'next' ? 1 : -1) * tr.clientWidth * 0.8, behavior: 'smooth' });
-      return;
-    }
+    if ((el = e.target.closest('[data-car="docTrack"]'))) { dcMove(el.getAttribute('data-dir') === 'next' ? 1 : -1); dcRestart(); return; }
+    if ((el = e.target.closest('#docPause'))) { dc.paused = !dc.paused; dcPauseLabel(); return; }
     if ((el = e.target.closest('[data-open-search]'))) { openSearch(el); return; }
     if (e.target.closest('[data-close-search]') || e.target.id === 'searchDlg') { closeSearch(); return; }
     if (e.target.closest('[data-close]')) toggleDrawer(false);
@@ -602,20 +671,8 @@
     if (p && p.catch) p.catch(hideVideo); // autoplay blocked (e.g. low-power mode): keep the gradient
   }
 
-  heroDocStart();
 
-  /* mobile: size the hero slide area to the tallest slide so the doctor carousel sits right under the buttons */
-  function fitHeroSlides() {
-    var wrap = document.querySelector('.slides'); if (!wrap) return;
-    if (window.innerWidth > 860) { wrap.style.minHeight = ''; return; }
-    var h = 0;
-    wrap.querySelectorAll('.slide > .container').forEach(function (c) { h = Math.max(h, c.offsetHeight); });
-    if (h) wrap.style.minHeight = (h + 56) + 'px';
-  }
-  fitHeroSlides();
-  window.addEventListener('resize', fitHeroSlides);
-  window.addEventListener('load', fitHeroSlides);
-  document.addEventListener('click', function (e) { if (e.target.closest('[data-lang]')) setTimeout(fitHeroSlides, 0); });
+  dcInit();
 
   /* overview box video: load when the box comes into view, play the whole video on a loop */
   document.querySelectorAll('.about-video').forEach(function (v) {
