@@ -296,6 +296,44 @@
       bn.hidden = false;
     }
   }
+  /* homepage hero: one doctor at a time (only doctors with an approved photo) */
+  var heroDocIdx = 0, heroDocTimer = null, heroDocPaused = false;
+  function heroDocList() { return DOCTORS.filter(function (d) { return d.photo; }); }
+  function renderHeroDocs() {
+    var el = $('heroDocs'); if (!el) return;
+    var list = heroDocList(); if (!list.length) { el.parentNode.parentNode.hidden = true; return; }
+    heroDocIdx = (heroDocIdx + list.length) % list.length;
+    el.setAttribute('aria-label', t('ourDoctors', 'Our Doctors'));
+    el.innerHTML = '<div class="hd-stage">' + list.map(function (d, i) {
+      var url = 'doctor.html?id=' + d.slug;
+      return '<a class="hd-card' + (i === heroDocIdx ? ' on' : '') + '" href="' + url + '" role="group" aria-roledescription="slide" aria-label="' + (i + 1) + ' / ' + list.length + ': ' + esc(d.name) + '"' + (i === heroDocIdx ? '' : ' aria-hidden="true" tabindex="-1"') + '>' +
+        '<span class="hd-photo"><img src="' + esc(d.photo) + '" alt="' + esc('Portrait of ' + d.name + ', ' + d.role) + '" ' + (i === heroDocIdx ? '' : 'loading="lazy" ') + 'decoding="async" /></span>' +
+        '<span class="hd-body"><b>' + esc(d.name) + '</b><span>' + esc(d.role) + '</span><em>' + t('viewProfile', 'View profile') + ' →</em></span></a>';
+    }).join('') + '</div>' +
+      '<div class="hd-controls"><button type="button" class="hd-btn" data-hd="-1" aria-label="' + esc(t('prevDoctor', 'Previous doctor')) + '">‹</button>' +
+      '<span class="hd-dots">' + list.map(function (d, i) { return '<button type="button" class="hd-dot' + (i === heroDocIdx ? ' on' : '') + '" data-hd-go="' + i + '" aria-label="' + esc(d.name) + '"' + (i === heroDocIdx ? ' aria-current="true"' : '') + '></button>'; }).join('') + '</span>' +
+      '<button type="button" class="hd-btn" data-hd="1" aria-label="' + esc(t('nextDoctor', 'Next doctor')) + '">›</button></div>';
+  }
+  function heroDocGo(i) {
+    var el = $('heroDocs'); if (!el) return;
+    var list = heroDocList(); heroDocIdx = (i + list.length) % list.length;
+    el.querySelectorAll('.hd-card').forEach(function (c, j) {
+      var on = j === heroDocIdx; c.classList.toggle('on', on);
+      if (on) { c.removeAttribute('aria-hidden'); c.removeAttribute('tabindex'); var img = c.querySelector('img'); if (img) img.removeAttribute('loading'); }
+      else { c.setAttribute('aria-hidden', 'true'); c.setAttribute('tabindex', '-1'); }
+    });
+    el.querySelectorAll('.hd-dot').forEach(function (b, j) { b.classList.toggle('on', j === heroDocIdx); if (j === heroDocIdx) b.setAttribute('aria-current', 'true'); else b.removeAttribute('aria-current'); });
+  }
+  function heroDocStart() {
+    var el = $('heroDocs'); if (!el || heroDocTimer) return;
+    var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (reduce) return; // no auto-advance; buttons still work
+    heroDocTimer = setInterval(function () { if (!heroDocPaused && !document.hidden) heroDocGo(heroDocIdx + 1); }, 5000);
+    el.addEventListener('mouseenter', function () { heroDocPaused = true; });
+    el.addEventListener('mouseleave', function () { heroDocPaused = false; });
+    el.addEventListener('focusin', function () { heroDocPaused = true; });
+    el.addEventListener('focusout', function () { heroDocPaused = false; });
+  }
   function renderVideos() { var el = $('videoGrid'); if (el) el.innerHTML = VIDEOS.map(videoCard).join(''); }
   function renderMgmt() {
     var el = $('mgmtGrid'); if (!el) return;
@@ -444,7 +482,7 @@
     $('burger').addEventListener('click', function () { toggleDrawer(true); });
     renderSpecGrid(); renderDocTrack(); renderPkgs(); renderFac(); renderNews(); renderMgmt();
     renderAboutText(); renderCallCenter(); renderStats();
-    renderNewsPage(); renderInfoPage(); renderMembership(); renderVideos(); renderMemberSection();
+    renderNewsPage(); renderInfoPage(); renderMembership(); renderVideos(); renderMemberSection(); renderHeroDocs();
     renderFinder(); renderDoctorList(); renderSpeciality(); renderDoctor(); renderForm();
   }
 
@@ -466,6 +504,8 @@
       if (tab === 'check') location.href = 'health-checkups.html';
       return;
     }
+    if ((el = e.target.closest('[data-hd]'))) { heroDocGo(heroDocIdx + (+el.getAttribute('data-hd'))); return; }
+    if ((el = e.target.closest('[data-hd-go]'))) { heroDocGo(+el.getAttribute('data-hd-go')); return; }
     if ((el = e.target.closest('[data-video]'))) {
       var vid = el.getAttribute('data-video');
       el.outerHTML = '<div class="video-card playing"><iframe src="https://www.youtube-nocookie.com/embed/' + encodeURIComponent(vid) + '?autoplay=1&rel=0" title="' + esc(t('videoAlt', 'Hodan Hospital video')) +
@@ -561,6 +601,21 @@
     var p = heroVideo.play && heroVideo.play();
     if (p && p.catch) p.catch(hideVideo); // autoplay blocked (e.g. low-power mode): keep the gradient
   }
+
+  heroDocStart();
+
+  /* mobile: size the hero slide area to the tallest slide so the doctor carousel sits right under the buttons */
+  function fitHeroSlides() {
+    var wrap = document.querySelector('.slides'); if (!wrap) return;
+    if (window.innerWidth > 860) { wrap.style.minHeight = ''; return; }
+    var h = 0;
+    wrap.querySelectorAll('.slide > .container').forEach(function (c) { h = Math.max(h, c.offsetHeight); });
+    if (h) wrap.style.minHeight = (h + 56) + 'px';
+  }
+  fitHeroSlides();
+  window.addEventListener('resize', fitHeroSlides);
+  window.addEventListener('load', fitHeroSlides);
+  document.addEventListener('click', function (e) { if (e.target.closest('[data-lang]')) setTimeout(fitHeroSlides, 0); });
 
   /* overview box video: load when the box comes into view, play the whole video on a loop */
   document.querySelectorAll('.about-video').forEach(function (v) {

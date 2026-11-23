@@ -1987,7 +1987,8 @@ var T_SO = {
   pBookSub: 'Ballan ku codso iimeyl ama WhatsApp, ama wac isbitaalka.', apptText: 'Codsigaaga ku dir iimeyl ama WhatsApp, ama wac isbitaalka +252 61 1678555. Xaaladaha degdegga ah si toos ah u wac.',
   pChecksSub: 'Baaritaanno caafimaad oo loogu talagalay ragga iyo haweenka.', chkSub: 'Baaritaanno caafimaad oo loogu talagalay ragga iyo haweenka.',
   h3title: 'Dhakhaatiir Takhasus leh iyo Qaybo', qIntlSub: 'Booqashadaada ku qorshee xarunta wicitaanka', specSub: 'Qaybaha caafimaadka iyo adeegyada ay bixiyaan.', docSub: 'Dhakhaatiirtayada iyo takhaasusleyaasha.',
-  pServicesSub: 'Daryeel caafimaad oo dhammaystiran oo qof walba loogu talagalay.', memberTitle: 'Kaarka Xubinnimada Isbitaalka Hodan',
+  pServicesSub: 'Daryeel caafimaad oo dhammaystiran oo qof walba loogu talagalay.',
+  prevDoctor: 'Dhakhtarkii hore', nextDoctor: 'Dhakhtarka xiga', memberTitle: 'Kaarka Xubinnimada Isbitaalka Hodan',
   memberIntro: 'Waxaa loogu talagalay inuu xubnaha, xaasaskooda iyo carruurtooda ka caawiyo helitaanka adeegyada caafimaadka.',
   confirmNote: 'Adeegyada iyo helitaanka dhakhaatiirta way is beddeli karaan. Fadlan wac isbitaalka si aad u xaqiijiso ka hor booqashadaada.'
 };
