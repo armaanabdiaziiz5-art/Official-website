@@ -149,7 +149,7 @@
   }
   function searchIndex() {
     var idx = [];
-    DOCTORS.forEach(function (d) { var s = specById(d.spec); idx.push({ type: 'doctors', title: d.name, sub: d.role, href: 'doctor.html?id=' + d.slug, hay: [d.name, d.role, s ? s.en + ' ' + s.so : ''].join(' ') }); });
+    DOCTORS.forEach(function (d) { var s = specById(d.spec); idx.push({ type: 'doctors', title: d.name, sub: d.role, href: 'doctor.html?id=' + d.slug, hay: [d.name, d.aka || '', d.role, s ? s.en + ' ' + s.so : ''].join(' ') }); });
     SPECS.forEach(function (s) { idx.push({ type: 'specs', title: specName(s), sub: s.den, href: 'speciality.html?id=' + s.id, hay: [s.en, s.so, s.den].concat(s.sections.map(function (x) { return x.items.join(' '); })).join(' ') }); });
     SERVICES.forEach(function (g) { g.items.forEach(function (it) { idx.push({ type: 'services', title: it, sub: L(g), href: 'services.html#facilities', hay: it + ' ' + g.en }); }); });
     PACKAGES.forEach(function (p) { idx.push({ type: 'pages', title: p.en, sub: t('navChecks', 'Health Checkups'), href: 'health-checkups.html', hay: p.en + ' ' + p.tests.join(' ') }); });
@@ -287,6 +287,15 @@
       '<ul class="ticks" style="grid-template-columns:1fr">' + MEMBERSHIP.benefits.map(function (b) { return '<li>' + esc(b) + '</li>'; }).join('') + '</ul>' +
       '<p class="section-sub">' + esc(MEMBERSHIP.howTo) + '</p>';
   }
+  function renderMemberSection() {
+    var ul = $('memberBenefitsShort'); if (!ul) return;
+    ul.innerHTML = MEMBERSHIP.benefits.map(function (b) { return '<li>' + esc(b) + '</li>'; }).join('');
+    var bn = $('memberBanner');
+    if (MEMBERSHIP.banner) { // only set once the banner is Public + Cleared
+      bn.innerHTML = '<img src="' + esc(MEMBERSHIP.banner.src) + '" alt="' + esc(MEMBERSHIP.banner.alt) + '" loading="lazy" decoding="async" />';
+      bn.hidden = false;
+    }
+  }
   function renderVideos() { var el = $('videoGrid'); if (el) el.innerHTML = VIDEOS.map(videoCard).join(''); }
   function renderMgmt() {
     var el = $('mgmtGrid'); if (!el) return;
@@ -347,7 +356,7 @@
     specOptions($('docFilter'), t('allSpecs', 'All specialities'), true);
     var q = $('docSearch').value.trim().toLowerCase(), f = $('docFilter').value;
     var list = DOCTORS.filter(function (d) {
-      var s = specById(d.spec), hay = (d.name + ' ' + (s ? s.en + ' ' + s.so : '') + ' ' + (d.role || '')).toLowerCase();
+      var s = specById(d.spec), hay = (d.name + ' ' + (d.aka || '') + ' ' + (s ? s.en + ' ' + s.so : '') + ' ' + (d.role || '')).toLowerCase();
       return matchSpec(d, f) && (!q || hay.indexOf(q) > -1);
     });
     $('docCount').textContent = list.length + ' ' + t('docsFound', 'doctors found');
@@ -435,7 +444,7 @@
     $('burger').addEventListener('click', function () { toggleDrawer(true); });
     renderSpecGrid(); renderDocTrack(); renderPkgs(); renderFac(); renderNews(); renderMgmt();
     renderAboutText(); renderCallCenter(); renderStats();
-    renderNewsPage(); renderInfoPage(); renderMembership(); renderVideos();
+    renderNewsPage(); renderInfoPage(); renderMembership(); renderVideos(); renderMemberSection();
     renderFinder(); renderDoctorList(); renderSpeciality(); renderDoctor(); renderForm();
   }
 

@@ -544,7 +544,8 @@ var SPECS = [
 var DOCTORS = [
   {
     "slug": "fuad-aamir",
-    "name": "Prof Dr. Fuad Aamir",
+    "name": "Prof. Dr. Fuad Amir",
+    "aka": "Prof Dr. Fuad Aamir",
     "spec": "internal-medicine",
     "role": "Internal Medicine and Gastroenterology",
     "qual": null,
@@ -564,7 +565,8 @@ var DOCTORS = [
   },
   {
     "slug": "mohammed-abdulkarim",
-    "name": "Dr. Mohammed Abdulkarim",
+    "name": "Dr. Mohamed Abdulkarim",
+    "aka": "Dr. Mohammed Abdulkarim",
     "spec": "orthopedics",
     "role": "Orthopedic & Trauma Surgery",
     "qual": "MBBS, MD",
@@ -636,7 +638,7 @@ var DOCTORS = [
     "slug": "samira-abdirahman-mohamud",
     "name": "Dr. Samira AbdiRahman Mohamud",
     "spec": "ophthalmology",
-    "role": "Clinical Optometry",
+    "role": "Consultant Clinical Optometrist",
     "qual": "OD, MS Clinical Optometry",
     "exp": "8 years",
     "bio": "8 years; UKM Malaysia; eye diseases and vision disorders.",
@@ -842,8 +844,8 @@ var LEADERS = [
 var SERVICES = [
   {
     "id": "centers",
-    "en": "Centres",
-    "so": "Xarumo",
+    "en": "Centers of Excellence",
+    "so": "Xarumaha Heerka Sare",
     "items": [
       "Pain and Headache Management",
       "Musculoskeletal Health",
@@ -852,8 +854,8 @@ var SERVICES = [
   },
   {
     "id": "outpatient",
-    "en": "Outpatient clinics",
-    "so": "Kiliinikada bukaan-socodka",
+    "en": "Outpatient Services",
+    "so": "Adeegyada Bukaan-socodka",
     "items": [
       "Oral Health and Dentistry Clinic",
       "Ophthalmology & Ophthalmic Surgery",
@@ -870,8 +872,8 @@ var SERVICES = [
   },
   {
     "id": "inpatient",
-    "en": "Inpatient & critical care",
-    "so": "Bukaan-jiifka & daryeelka degdegga",
+    "en": "Inpatient Services",
+    "so": "Adeegyada Bukaan-jiifka",
     "items": [
       "ICU, NICU and Nursery",
       "Operation & Anesthesia Unit"
@@ -879,8 +881,8 @@ var SERVICES = [
   },
   {
     "id": "other",
-    "en": "Hospital departments",
-    "so": "Qaybaha isbitaalka",
+    "en": "Other Services",
+    "so": "Adeegyo Kale",
     "items": [
       "Laboratory Department",
       "Medical Imaging Department",
@@ -890,8 +892,8 @@ var SERVICES = [
   },
   {
     "id": "diagnostics",
-    "en": "Diagnostic tests",
-    "so": "Baaritaannada",
+    "en": "Diagnostics & Procedures",
+    "so": "Baaritaanno & Habraacyo",
     "items": [
       "X-rays",
       "CT scans",
@@ -1853,7 +1855,8 @@ var MEMBERSHIP = {
     "Discounted rates for medical treatments and consultations.",
     "Personalized healthcare services for eligible family members."
   ],
-  "howTo": "For more information or to obtain a membership card, contact Hodan Hospital. Helpline: 1234."
+  "howTo": "For more information or to obtain a membership card, contact Hodan Hospital. Helpline: 1234.",
+  "banner": null
 };
 
 var VIDEOS = [
@@ -1981,5 +1984,10 @@ var T_SO = {
   qaCheck: 'Baaritaanka Caafimaadka', qaCheckShort: 'Baaritaan', qaDoctor: 'Raadi Dhakhtar', qaDoctorShort: 'Dhakhaatiir', qaSearch: 'Raadi', qaSearchShort: 'Raadi',
   searchTitle: 'Ka raadi Isbitaalka Hodan', searchPh: 'Raadi dhakhaatiir, takhasusyo, adeegyo…', close: 'Xir',
   searchHint: 'Qor ugu yaraan 2 xaraf, tusaale magaca dhakhtar, "cardiology" ama "X-ray".', searchNone: 'Natiijo lama helin. Isku day eray kale, ama wac +252 61 1678555.', searchPages: 'Bogag & baaritaanno',
+  pBookSub: 'Ballan ku codso iimeyl ama WhatsApp, ama wac isbitaalka.', apptText: 'Codsigaaga ku dir iimeyl ama WhatsApp, ama wac isbitaalka +252 61 1678555. Xaaladaha degdegga ah si toos ah u wac.',
+  pChecksSub: 'Baaritaanno caafimaad oo loogu talagalay ragga iyo haweenka.', chkSub: 'Baaritaanno caafimaad oo loogu talagalay ragga iyo haweenka.',
+  h3title: 'Dhakhaatiir Takhasus leh iyo Qaybo', qIntlSub: 'Booqashadaada ku qorshee xarunta wicitaanka', specSub: 'Qaybaha caafimaadka iyo adeegyada ay bixiyaan.', docSub: 'Dhakhaatiirtayada iyo takhaasusleyaasha.',
+  pServicesSub: 'Daryeel caafimaad oo dhammaystiran oo qof walba loogu talagalay.', memberTitle: 'Kaarka Xubinnimada Isbitaalka Hodan',
+  memberIntro: 'Waxaa loogu talagalay inuu xubnaha, xaasaskooda iyo carruurtooda ka caawiyo helitaanka adeegyada caafimaadka.',
   confirmNote: 'Adeegyada iyo helitaanka dhakhaatiirta way is beddeli karaan. Fadlan wac isbitaalka si aad u xaqiijiso ka hor booqashadaada.'
 };
