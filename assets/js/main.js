@@ -708,23 +708,34 @@
     } else start();
   });
 
-  /* hero slider */
+  /* hero slider: one step every 5 s moves both the text slide and the background photo.
+     Steps count up continuously, so with 3 text slides and 2 photos each step still fades to the next photo,
+     and the arrows and dots move the same sequence. */
   var slides = document.querySelectorAll('.slide');
   if (slides.length) {
-    var dots = $('dots'), idx = 0, timer;
-    var go = function (i) {
-      idx = (i + slides.length) % slides.length;
-      slides.forEach(function (s, j) { s.classList.toggle('active', j === idx); });
-      dots.querySelectorAll('button').forEach(function (b, j) { b.classList.toggle('active', j === idx); });
-      clearInterval(timer); timer = setInterval(function () { go(idx + 1); }, 6000);
+    var dots = $('dots'), photos = document.querySelectorAll('#heroPhotos .hero-photo'), step = 0, timer;
+    var heroBox = document.querySelector('.hero');
+    if (photos.length) { // show photos (and the dark overlay) once the first one has loaded; the gradient stays as fallback
+      var first = photos[0], ready = function () { heroBox.classList.add('has-photos'); };
+      if (first.complete && first.naturalWidth) ready(); else { first.addEventListener('load', ready); first.addEventListener('error', function () { heroBox.classList.remove('has-photos'); }); }
+    }
+    var mod = function (a, n) { return ((a % n) + n) % n; };
+    var show = function (s) {
+      step = s;
+      var t = mod(step, slides.length), ph = photos.length ? mod(step, photos.length) : -1;
+      slides.forEach(function (el, j) { el.classList.toggle('active', j === t); });
+      dots.querySelectorAll('button').forEach(function (b, j) { b.classList.toggle('active', j === t); if (j === t) b.setAttribute('aria-current', 'true'); else b.removeAttribute('aria-current'); });
+      photos.forEach(function (img, j) { img.classList.toggle('is-on', j === ph); });
+      clearInterval(timer); timer = setInterval(function () { show(step + 1); }, 5000);
     };
     slides.forEach(function (_, i) {
       var b = document.createElement('button'); b.type = 'button'; b.setAttribute('aria-label', 'Slide ' + (i + 1));
-      b.addEventListener('click', function () { go(i); }); dots.appendChild(b);
+      b.addEventListener('click', function () { show(step + mod(i - step, slides.length)); }); // forward to that slide
+      dots.appendChild(b);
     });
-    document.querySelector('.hero-arrow.prev').addEventListener('click', function () { go(idx - 1); });
-    document.querySelector('.hero-arrow.next').addEventListener('click', function () { go(idx + 1); });
-    go(0);
+    document.querySelector('.hero-arrow.prev').addEventListener('click', function () { show(step - 1); });
+    document.querySelector('.hero-arrow.next').addEventListener('click', function () { show(step + 1); });
+    show(0);
   }
 
   /* reveal + counters */
