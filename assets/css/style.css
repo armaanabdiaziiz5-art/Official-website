@@ -649,3 +649,12 @@
   @media (max-width: 560px) { #facilities .fac-grid { grid-template-columns: 1fr; } #facilities.section { padding: 32px 0; } }
   #mgmtGrid .card { scroll-margin-top: 110px; }
   #mgmtGrid .card:target { outline: 3px solid var(--accent); outline-offset: 3px; }
+
+  /* ================= Homepage hero photo slideshow ================= */
+  .hero-photos { position: absolute; inset: 0; }
+  .hero-photo { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: var(--pos, 50% 50%); opacity: 0; transition: opacity 1.2s ease; }
+  .hero-photo.is-on { opacity: 1; }
+  .hero.has-photos .hero-overlay { opacity: 1; }
+  .hero.has-photos .slide { background: transparent; }
+  @media (max-width: 860px) { .hero-photo { object-position: var(--pos-m, var(--pos, 50% 50%)); } }
+  @media (prefers-reduced-motion: reduce) { .hero-photo { transition: none; } }
