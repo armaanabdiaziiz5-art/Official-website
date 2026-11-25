@@ -647,3 +647,5 @@
   @media (max-width: 1239px) { #facilities .fac-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
   @media (max-width: 860px) { #facilities .fac-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } #facilities .fac-wrap { padding: 28px 20px 24px; } }
   @media (max-width: 560px) { #facilities .fac-grid { grid-template-columns: 1fr; } #facilities.section { padding: 32px 0; } }
+  #mgmtGrid .card { scroll-margin-top: 110px; }
+  #mgmtGrid .card:target { outline: 3px solid var(--accent); outline-offset: 3px; }
