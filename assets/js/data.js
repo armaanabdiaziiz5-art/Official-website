@@ -1990,6 +1990,7 @@ var T_SO = {
   pServicesSub: 'Daryeel caafimaad oo dhammaystiran oo qof walba loogu talagalay.',
   prevDoctor: 'Dhakhtarkii hore', nextDoctor: 'Dhakhtarka xiga',
   dcPause: 'Jooji wareegga dhakhaatiirta', dcPlay: 'Sii wad wareegga dhakhaatiirta',
+  showMore: 'Muuji wax badan', showLess: 'Muuji wax yar',
   languages: 'Luqadaha', workingHours: 'Saacadaha shaqada', registration: 'Lambarka diiwaangelinta', bookWithTitle: 'Ballan qabso',
   callNow: 'Hadda wac', reqWhatsApp: 'Ku codso WhatsApp', reqWhatsAppNote: 'WhatsApp ayaa furmaya iyadoo fariintaadu diyaar tahay. Riix Dir (Send) si aad u gudbiso.',
   reqEmail: 'Ku codso iimeyl', reqEmailNote: 'Barnaamijka iimeylka ayaa furmaya iyadoo codsigu diyaar yahay. Riix Dir (Send) si aad u gudbiso.',
