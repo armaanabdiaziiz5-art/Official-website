@@ -204,9 +204,14 @@
       '<a href="book-appointment.html?pkg=' + p.id + '" class="btn btn-red">' + t('bookCheck', 'Book this Check-up') + '</a></div>';
   }
   var SVC_ICON = { centers: 'i-heart', outpatient: 'i-stetho', inpatient: 'i-bed', other: 'i-plus', diagnostics: 'i-scan' };
+  var SVC_SHOW = 4; // longer lists show the first four items, with Show more / Show less
   function svcGroup(g) {
-    return '<div class="fac"><div class="ic">' + icon(SVC_ICON[g.id] || 'i-plus', '#fff', 24) + '</div><h3>' + esc(L(g)) + '</h3><ul class="svc-list">' +
-      g.items.map(function (x) { return '<li>' + esc(x) + '</li>'; }).join('') + '</ul></div>';
+    var id = 'svc-' + g.id, extra = g.items.length - SVC_SHOW;
+    return '<div class="fac"><div class="fac-head"><div class="ic">' + icon(SVC_ICON[g.id] || 'i-plus', '#fff', 20) + '</div><h3>' + esc(L(g)) + '</h3></div>' +
+      '<ul class="svc-list" id="' + id + '">' +
+      g.items.map(function (x, i) { return '<li' + (i >= SVC_SHOW ? ' class="svc-extra" hidden' : '') + '>' + esc(x) + '</li>'; }).join('') + '</ul>' +
+      (extra > 0 ? '<button type="button" class="svc-more" aria-expanded="false" aria-controls="' + id + '" data-more="' + extra + '">' + esc(t('showMore', 'Show more')) + ' (' + extra + ')</button>' : '') +
+      '</div>';
   }
   function fmtDate(iso) {
     if (!iso) return '';
@@ -585,6 +590,13 @@
       return;
     }
     if ((el = e.target.closest('[data-car="docTrack"]'))) { dcMove(el.getAttribute('data-dir') === 'next' ? 1 : -1); dcRestart(); return; }
+    if ((el = e.target.closest('.svc-more'))) {
+      var open = el.getAttribute('aria-expanded') !== 'true';
+      el.closest('.fac').querySelectorAll('.svc-extra').forEach(function (li) { li.hidden = !open; });
+      el.setAttribute('aria-expanded', String(open));
+      el.textContent = open ? t('showLess', 'Show less') : t('showMore', 'Show more') + ' (' + el.getAttribute('data-more') + ')';
+      return;
+    }
     if ((el = e.target.closest('#docPause'))) { dc.paused = !dc.paused; dcPauseLabel(); return; }
     if ((el = e.target.closest('[data-open-search]'))) { openSearch(el); return; }
     if (e.target.closest('[data-close-search]') || e.target.id === 'searchDlg') { closeSearch(); return; }
