@@ -758,8 +758,9 @@ var DOCTORS = [
 
 var LEADERS = [
   {
+    "slug": "abdiaziz-ahmed-aabow",
     "name": "Mr Abdiaziz Ahmed “Aabow”",
-    "role": "Board Chairman",
+    "role": "Board Chairman, Hodan Hospital",
     "bio": "",
     "message": [
       "Hodan Hospital is a private healthcare institution dedicated to excellence in medical care and innovation. With a commitment to advancing the healthcare system, the hospital integrates modern medical technologies, evidence-based practices and a patient-first approach to deliver high-quality services.",
@@ -767,9 +768,10 @@ var LEADERS = [
       "Beyond patient care, Hodan Hospital contributes to healthcare sector development through continuous medical education, research initiatives and professional training programs. By embracing innovation and fostering collaboration, the hospital strives to improve healthcare accessibility and community well-being.",
       "Hodan Hospital remains committed to shaping the future of healthcare by combining expertise, technology and a vision for sustainable development in the medical field."
     ],
-    "photo": null
+    "photo": "assets/img/leadership/abdiaziz-ahmed-aabow.jpg"
   },
   {
+    "slug": "mohamed-issak-omar",
     "name": "Dr. Mohamed Issak Omar",
     "role": "Founder & CEO",
     "bio": "Medical doctor; MBBS, Kassala University, Sudan (2012); Diploma in Health Service Management, Sudan University. Over 10 years in hospital management and health services. Former founder and CEO of Somali Sudanese Specialized Hospital; co-founder and shareholder of Zazi Hospitals, Nairobi; business affiliation with Issak Pharmaceutical Company, founded in 2017.",
@@ -777,6 +779,7 @@ var LEADERS = [
     "photo": "assets/img/leadership/mohamed-issak-omar.jpg"
   },
   {
+    "slug": "keif-kheire-deputy-director",
     "name": "Dr. Keif Kheire",
     "role": "Deputy Director",
     "bio": "Former CEO of Dr. Osman Fiqi Hospital for a decade and Medical Director of Shifa Hospital. Over 15 years in obstetrics and gynecology; LUMHS Pakistan graduate; MPH, Kampala University.",
@@ -784,6 +787,7 @@ var LEADERS = [
     "photo": null
   },
   {
+    "slug": "abdulkadir-sh-omar-gadudow",
     "name": "Dr. Abdulkadir Sh. Omar “Gadudow”",
     "role": "Medical Director",
     "bio": "Pediatrician with experience in clinical leadership, healthcare management, patient care and medical administration; focuses on quality, clinical operations and patient safety.",
@@ -791,6 +795,7 @@ var LEADERS = [
     "photo": "assets/img/leadership/abdulkadir-sh-omar-gadudow.jpg"
   },
   {
+    "slug": "jibril-hussein-amalow",
     "name": "Jibril Hussein Amalow",
     "role": "Procurement and Logistics Manager",
     "bio": "Experienced in supply chain management, strategic sourcing, inventory control, healthcare procurement, vendor relationships and logistics. Focuses on cost optimization and timely medical supplies.",
@@ -798,6 +803,7 @@ var LEADERS = [
     "photo": "assets/img/leadership/jibril-hussein-amalow.jpg"
   },
   {
+    "slug": "abdirizak-salad",
     "name": "Abdirizak Salad",
     "role": "Head of Pharmacy",
     "bio": "Over six years at Somali Sudanese Hospital; degree in Public Administration from University of Somalia and Diploma in Pharmacology from Salam University. Technical and management training.",
@@ -805,6 +811,7 @@ var LEADERS = [
     "photo": "assets/img/leadership/abdirizak-salad.jpg"
   },
   {
+    "slug": "omar-mohamed",
     "name": "Omar Mohamed",
     "role": "Nursing Director",
     "bio": "Over 15 years in patient care and nursing administration; worked with MSF and SOS Children’s Village. Bachelor’s degrees in Nursing and Public Administration; other hospital management qualifications.",
@@ -812,6 +819,7 @@ var LEADERS = [
     "photo": "assets/img/leadership/omar-mohamed.jpg"
   },
   {
+    "slug": "abdalla-dahir-hassan",
     "name": "Abdalla Dahir Hassan",
     "role": "Chief Financial Officer (CFO)",
     "bio": "Master’s degree in Economics and Finance from Istanbul University. Experience in financial leadership, strategic growth, operational efficiency, healthcare, supply chains and work with UN agencies.",
@@ -819,6 +827,7 @@ var LEADERS = [
     "photo": "assets/img/leadership/abdalla-dahir-hassan.jpg"
   },
   {
+    "slug": "mahad-said",
     "name": "Mahad Said",
     "role": "Operations Manager",
     "bio": "Experience in financial planning, budgeting, strategic financial management, accounting and financial analysis; financial process optimization, risk, compliance, team leadership and cost efficiency.",
@@ -826,6 +835,7 @@ var LEADERS = [
     "photo": "assets/img/leadership/mahad-said.jpg"
   },
   {
+    "slug": "abdikadir-baryare",
     "name": "Abdikadir Baryare",
     "role": "HR Manager",
     "bio": "Over 10 years in management across institutions and positions; MBA, Mount Kenya University.",
@@ -833,6 +843,7 @@ var LEADERS = [
     "photo": "assets/img/leadership/abdikadir-baryare.jpg"
   },
   {
+    "slug": "mohamed-dahir-salad-dr-heydar",
     "name": "Dr. Mohamed Dahir Salad (Dr. Heydar)",
     "role": "Quality Control Director",
     "bio": "Internal Medicine physician and healthcare quality professional with over 10 years in Somalia’s healthcare system; clinical practice, quality control, research, education and professional training. Focuses on evidence-based practice, patient safety, clinical documentation, compliance and continuous improvement.",

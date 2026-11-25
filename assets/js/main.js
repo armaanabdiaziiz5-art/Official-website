@@ -21,7 +21,7 @@
   // A portrait is shown only when the data has a photo (Public + Cleared in the CMS); otherwise initials.
   function portrait(person, color, cls) {
     return person.photo
-      ? '<img src="' + esc(person.photo) + '" alt="' + esc('Portrait of ' + person.name + (person.role ? ', ' + person.role : '') + ', Hodan Hospital') + '" loading="lazy" decoding="async" class="' + (cls || '') + '" />'
+      ? '<img src="' + esc(person.photo) + '" alt="' + esc('Portrait of ' + person.name + (person.role ? ', ' + person.role : '') + (/Hodan Hospital/.test(person.role || '') ? '' : ', Hodan Hospital')) + '" loading="lazy" decoding="async" class="' + (cls || '') + '" />'
       : '<div class="avatar" style="color:' + color + '" role="img" aria-label="' + esc('Photo of ' + person.name + ' coming soon') + '">' + initials(person.name) + '</div>';
   }
   var OTHER = '_other'; // doctors without a department page
@@ -389,7 +389,7 @@
   function renderMgmt() {
     var el = $('mgmtGrid'); if (!el) return;
     el.innerHTML = LEADERS.map(function (m) {
-      return '<div class="card"><div class="lead-photo">' + portrait(m, '#c47a08') + '</div><div><b>' + esc(m.name) + '</b><span class="role">' + esc(m.role) + '</span>' +
+      return '<div class="card" id="leader-' + esc(m.slug) + '"><div class="lead-photo">' + portrait(m, '#c47a08') + '</div><div><b>' + esc(m.name) + '</b><span class="role">' + esc(m.role) + '</span>' +
         (m.bio ? '<p>' + esc(m.bio) + '</p>' : '') + '</div></div>';
     }).join('');
     var msg = $('chairMsg'), ch = LEADERS.filter(function (m) { return m.message && m.message.length; })[0];
@@ -613,6 +613,11 @@
     }
   });
   if (location.hash === '#search') setTimeout(function () { openSearch(); }, 0);
+  // anchors to content built by this script (e.g. about.html#leader-...) need a scroll once it exists
+  if (location.hash && location.hash !== '#search') setTimeout(function () {
+    var tgt = document.getElementById(decodeURIComponent(location.hash.slice(1)));
+    if (tgt && tgt.closest('#mgmtGrid, #docTrack, #newsGrid')) tgt.scrollIntoView({ block: 'center' });
+  }, 50);
   window.addEventListener('scroll', function () { var h = $('header'); if (h) h.classList.toggle('scrolled', window.scrollY > 10); }, { passive: true });
 
   /* ---------- page setup ---------- */
